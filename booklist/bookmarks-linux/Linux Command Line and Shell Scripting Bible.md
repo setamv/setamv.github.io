@@ -1,0 +1,219 @@
+- Command Line and Shell Scripting Bible  0
+    - About the Author    6
+    - Credits 7
+    - Contents at a Glance    9
+    - Contents    11
+    - Acknowledgments 25
+    - Introduction    27
+        - Who Should Read This Book   27
+        - How This Book Is Organized  27
+        - Minimum Requirements    30
+        - Where to Go from Here   30
+    - Part I: The Linux Command Line  31
+        - Chapter 1: Starting with Linux Shells   33
+            - What Is Linux?  33
+            - Linux Distributions 50
+            - Summary 54
+        - Chapter 2: Getting to the Shell 55
+            - Terminal Emulation  55
+            - The terminfo Database   61
+            - The Linux Console   65
+            - The xterm Terminal  66
+            - The Konsole Terminal    75
+            - The GNOME Terminal  82
+            - Summary 88
+        - Chapter 3: Basic bash Shell Commands    89
+            - Starting the Shell  89
+            - The Shell Prompt    90
+            - The bash Manual 93
+            - Filesystem Navigation   94
+            - File and Directory Listing  99
+            - File Handling   105
+            - Directory Handling  112
+            - Viewing File Contents   113
+            - Summary 120
+        - Chapter 4: More bash Shell Commands 121
+            - Monitoring Programs 121
+            - Monitoring Disk Space   134
+            - Working with Data Files 140
+            - Summary 151
+        - Chapter 5: Using Linux Environment Variables    153
+            - What Are Environment Variables? 153
+            - Setting Environment Variables   157
+            - Removing Environment Variables  159
+            - Default Shell Environment Variables 160
+            - Setting the PATH Environment Variable   164
+            - Locating System Environment Variables   165
+            - Variable Arrays 172
+            - Using Command Aliases   173
+            - Summary 174
+        - Chapter 6: Understanding Linux File Permissions 177
+            - Linux Security  177
+            - Using Linux Groups  187
+            - Decoding File Permissions   190
+            - Changing Security Settings  193
+            - Sharing Files   196
+            - Summary 198
+        - Chapter 7: Working with Editors 201
+            - The vim Editor  201
+            - The emacs Editor    206
+            - The KDE Family of Editors   213
+            - The GNOME Editor    221
+            - Summary 227
+    - Part II: Shell Scripting Basics 229
+        - Chapter 8: Basic Script Building    231
+            - Using Multiple Commands 231
+            - Creating a Script File  232
+            - Displaying Messages 234
+            - Using Variables 236
+            - Redirecting Input and Output    240
+            - Pipes   243
+            - Performing Math 246
+            - Exiting the Script  253
+            - Summary 256
+        - Chapter 9: Using Structured Commands    259
+            - Working with the if-then Statement  259
+            - The if-then-else Statement  262
+            - Nesting ifs 262
+            - The test Command    263
+            - Compound Condition Testing  279
+            - Advanced if-then Features   280
+            - The case Command    282
+            - Summary 283
+        - Chapter 10: More Structured Commands    285
+            - The for Command 285
+            - The C-Style for Command 294
+            - The while Command   296
+            - The until Command   299
+            - Nesting Loops   301
+            - Looping on File Data    303
+            - Controlling the Loop    304
+            - Processing the Output of a Loop 311
+            - Summary 312
+        - Chapter 11: Handling User Input 315
+            - Command Line Parameters 315
+            - Special Parameter Variables 320
+            - Being Shifty    323
+            - Working With Options    325
+            - Standardizing Options   334
+            - Getting User Input  335
+            - Summary 340
+        - Chapter 12: Presenting Data 343
+            - Understanding Input and Output  343
+            - Redirecting Output in Scripts   348
+            - Redirecting Input in Scripts    350
+            - Creating Your Own Redirection   351
+            - Listing Open File Descriptors   356
+            - Suppressing Command Output  358
+            - Using Temporary Files   358
+            - Logging Messages    362
+            - Summary 363
+        - Chapter 13: Script Control  365
+            - Handling Signals    365
+            - Running Scripts in Background Mode  371
+            - Running Scripts without a Console   373
+            - Job Control 374
+            - Being Nice  378
+            - Running Like Clockwork  379
+            - Start At the Beginning  385
+            - Summary 388
+    - Part III: Advanced Shell Scripting  391
+        - Chapter 14: Creating Functions  393
+            - Basic Script Functions  393
+            - Returning a Value   396
+            - Using Variables in Functions    399
+            - Array Variables and Functions   405
+            - Function Recursion  407
+            - Creating a Library  409
+            - Using Functions on the Command Line 411
+            - Summary 414
+        - Chapter 15: Adding Color to Scripts 415
+            - Creating Text Menus 415
+            - Adding Color    421
+            - Doing Windows   427
+            - Getting Graphic 439
+            - Summary 447
+        - Chapter 16: Introducing sed and gawk    449
+            - Text Manipulation   449
+            - The sed Editor Basics   460
+            - Summary 475
+        - Chapter 17: Regular Expressions 477
+            - What Are Regular Expressions?   477
+            - Defining BRE Patterns   479
+            - Extended Regular Expressions    491
+            - Regular Expressions in Action   496
+            - Summary 501
+        - Chapter 18: Advanced sed    503
+            - Multiline Commands  503
+            - The Hold Space  509
+            - Negating a Command  511
+            - Changing the Flow   514
+            - Pattern Replacement 517
+            - Using sed in Scripts    519
+            - Creating sed Utilities  521
+            - Summary 529
+        - Chapter 19: Advanced gawk   531
+            - Using Variables 531
+            - Working with Arrays 540
+            - Using Patterns  542
+            - Structured Commands 544
+            - Formatted Printing  549
+            - Built-in Functions  552
+            - User-Defined Functions  557
+            - Summary 559
+    - Part IV: Alternative Linux Shells   561
+        - Chapter 20: The ash Shell   563
+            - What Is the ash Shell?  563
+            - The Original ash Shell  564
+            - The dash Shell  570
+            - Scripting in dash   579
+            - Summary 585
+        - Chapter 21: The tcsh Shell  587
+            - What Is the tcsh Shell? 587
+            - The tcsh Shell Components   588
+            - Scripting in tcsh   607
+            - Summary 614
+        - Chapter 22: The Korn Shell  617
+            - The Korn Shell History  617
+            - The Parts of the ksh93 Shell    618
+            - Scripting in the ksh93 Shell    632
+            - Summary 639
+        - Chapter 23: The zsh Shell   641
+            - History of the zsh Shell    641
+            - Parts of the zsh Shell  642
+            - Scripting with zsh  661
+            - Summary 666
+    - Part V: Advanced Topics 667
+        - Chapter 24: Using a Database    669
+            - The MySQL Database  669
+            - The PostgreSQL Database 681
+            - Working with Tables 689
+            - Using the Database in Your Scripts  694
+            - Summary 701
+        - Chapter 25: Using the Web   703
+            - The Lynx Program    703
+            - The cURL Program    717
+            - Networking with zsh 724
+            - Summary 729
+        - Chapter 26: Using E-Mail    731
+            - The Basics of Linux E-Mail  731
+            - Setting Up Your Server  738
+            - Sending a Message with Mailx    747
+            - The Mutt Program    750
+            - Summary 753
+        - Chapter 27: Shell Scripts for Administrators    755
+            - Monitoring System Statistics    755
+            - Performing Backups  769
+            - Summary 776
+    - Appendix A: Quick Guide to bash Commands    779
+        - Built-In Commands   779
+        - Bash Commands   779
+        - Environment Variables   783
+    - Appendix B: Quick Guide to sed and gawk 789
+        - The sed Editor  789
+        - The gawk program    794
+    - Appendix C: Comparing Shells    801
+        - Variables   801
+        - Structured Commands 803
+        - Mathematical Operations 805
+    - Index   807

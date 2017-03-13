@@ -1,0 +1,169 @@
+- Cover   -15
+- Copyright   -13
+- Credits -12
+- About the Author    -11
+- About the Reviewers -10
+- Table of Contents   -4
+- Preface p15
+- Chapter 1: Shell Something Out  p21
+    - Introduction    p21
+    - Printing in the terminal    p23
+    - Playing with variables and environment  p26
+    - variables   p26
+    - Doing math calculations with the shell  p31
+    - Playing with file descriptors and redirection   p33
+    - Arrays and associative arrays   p39
+    - Visiting aliases    p41
+    - Grabbing information about terminal p43
+    - Getting, setting dates, and delays  p44
+    - Debugging the script    p47
+    - Functions and arguments p49
+    - Reading the output of a sequence    p52
+    - of commands p52
+    - Reading "n" characters without pressing p54
+    - Return  p54
+    - Field separators and iterators  p55
+    - Comparisons and tests   p58
+- Chapter 2: Have a Good Command  p63
+    - Introduction    p64
+    - Concatenating with cat  p64
+    - Recording and playback of terminal  p67
+    - sessions    p67
+    - Finding files and file listing  p69
+    - Playing with xargs  p77
+    - Translating with tr p83
+    - Checksum and verification   p86
+    - Sorting, unique and duplicates  p89
+    - Temporary file naming and random numbers    p94
+    - Splitting files and data    p95
+    - Slicing file names based on extension   p98
+    - Renaming and moving files in bulk   p100
+    - Spell checking and dictionary manipulation  p103
+    - Automating interactive input    p104
+- Chapter 3: File In, File Out    p109
+    - Introduction    p110
+    - Generate files of any size  p110
+    - Intersection and set difference (A-B)   p111
+    - on text files   p111
+    - Finding and deleting duplicate files    p114
+    - Making directories for a long path  p117
+    - File permissions, ownership, and sticky bit p118
+    - Making files immutable  p123
+    - Generating blank files in bulk  p124
+    - Finding a symbolic link and its target  p125
+    - Enumerating file type statistics    p127
+    - Loopback files and mounting p129
+    - Creating ISO files, Hybrid ISO  p131
+    - Finding difference between files, patching  p134
+    - head and tail - Printing the last or first  p136
+    - 10 lines    p136
+    - Listing only directories – alternative  p139
+    - methods p139
+    - Fast command-line navigation using pushd    p140
+    - and popd    p140
+    - Counting number of lines, words, characters p142
+    - in a file   p142
+    - Printing directory tree p143
+- Chapter 4: Texting and Driving  p145
+    - Introduction    p146
+    - Basic regular expression primer p146
+    - Searching and mining "text" inside a file   p150
+    - with grep   p150
+    - Column-wise cutting of a file with cut  p156
+    - Frequency of words used in a given file p160
+    - Basic sed primer    p161
+    - Basic awk primer    p164
+    - Replacing strings from a text or file   p170
+    - Compressing or decompressing JavaScript p172
+    - Iterating through lines, words, and p175
+    - characters in a file    p175
+    - Merging multiple files as columns   p176
+    - Printing the nth word or column in a file   p177
+    - or line p177
+    - Printing text between line numbers  p178
+    - or patterns p178
+    - Checking palindrome strings with a script   p179
+    - Printing lines in the reverse order p183
+    - Parsing e-mail address and URLs from text   p185
+    - Printing n lines before or after a pattern  p186
+    - in a file   p186
+    - Removing a sentence in a file containing    p188
+    - a word  p188
+    - Implementing head, tail, and tac with awk   p189
+    - Text slicing and parameter operations   p191
+- Chapter 5: Tangled Web? Not At All! p193
+    - Introduction    p194
+    - Downloading from a web page p194
+    - Downloading a web page as formatted p197
+    - plain text  p197
+    - A primer on cURL    p197
+    - Accessing Gmail mail from the command line  p202
+    - Parsing data from a website p203
+    - Image crawler and downloader    p205
+    - Web photo album generator   p207
+    - Twitter command-line client p209
+    - Define utility with Web backend p211
+    - Finding broken links in a website   p213
+    - Tracking changes to a website   p214
+    - Posting to a web page and reading response  p217
+- Chapter 6: The Backup Plan  p219
+    - Introduction    p219
+    - Archiving with tar  p220
+    - Archiving with cpio p225
+    - Compress with gunzip (gzip) p226
+    - Compressing with bunzip (bzip)  p229
+    - Compressing with lzma   p231
+    - Archiving and compressing with zip  p233
+    - squashfs: The heavy compression filesystem  p234
+    - Cryptographic tools and hashes  p236
+    - Backup snapshots with rsync p238
+    - Version control based backup with Git   p241
+    - Cloning hard drive and disks with dd    p244
+- Chapter 7: The Old-boy Network  p247
+    - Introduction    p247
+    - Basic networking primer p248
+    - Let's ping! p255
+    - Listing all the machines alive on a network p257
+    - Transferring files  p261
+    - Setting up an Ethernet and wireless LAN p264
+    - with script p264
+    - Password less auto-login with SSH   p267
+    - Running commands on remote host p269
+    - with SSH    p269
+    - Mounting a remote drive at a local mount    p273
+    - point   p273
+    - Multi-casting window messages on    p274
+    - a network   p274
+    - Network traffic and port analysis   p276
+- Chapter 8: Put on the Monitor's Cap p279
+    - Introduction    p280
+    - Disk usage hacks    p280
+    - Calculating execution time for a command    p286
+    - Information about logged users, boot logs,  p288
+    - and failure boot    p288
+    - Printing 10 most frequently-used commands   p290
+    - Listing the top 10 CPU consuming process    p292
+    - in a hour   p292
+    - Monitoring command outputs with watch   p295
+    - Logging access to files and directories p296
+    - Logfile management with logrotate   p297
+    - Logging with syslog p299
+    - Monitoring user logins to find intruders    p300
+    - Remote disk usage health monitor    p303
+    - Finding out active user hours on a system   p306
+- Chapter 9: Administration Calls p309
+    - Introduction    p309
+    - Gathering information about processes   p310
+    - Killing processes and send or respond   p318
+    - to signals  p318
+    - which, whereis, file, whatis, and loadavg   p321
+    - explained   p321
+    - Sending messages to user terminals  p323
+    - Gathering system information    p325
+    - Using /proc – gathering information p326
+    - Scheduling with cron    p327
+    - Writing and reading MySQL database  p330
+    - from Bash   p330
+    - User administration script  p335
+    - Bulk image resizing and format conversion   p339
+- Index   p343
