@@ -1,7 +1,3 @@
-<style type="text/css">
-    { font-size: 12px }
-</style>
-
 ### This is the pages catalogues
 
 - [booklist](booklist/index.md) 
@@ -12,3 +8,6 @@
 
 - [reading notes](reading-notes/index.md)
 　　读书笔记
+
+- [reading plans](reading-plans/index.md)
+　　阅读计划
