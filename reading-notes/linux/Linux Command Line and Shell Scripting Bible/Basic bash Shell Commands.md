@@ -10,8 +10,8 @@
 
 #### The Shell Prompt      
 　　There are two environment variables that control the format of the command line prompt:       
-    - **PS1**: Controls the format of the default command line prompt       
-    - **PS2**: Controls the format of the second-tier command line prompt       
+        - **PS1**: Controls the format of the default command line prompt       
+        - **PS2**: Controls the format of the second-tier command line prompt       
 
 　　The following table shows the special characters that you can use in the prompt string:　　　    　　
 
@@ -43,6 +43,7 @@
 | \\            | A backslash                                                     |
 | \[            | Begins a control code sequence                                  |
 | \]            | Ends a control code sequence                                    |
+
 
     For example, the following command will set the shell prompt to `[-bash noaa]$`
     ```
@@ -85,8 +86,10 @@
 | /usr          | The user-installed software directory.                    |
 | /var          | The variable directory,                                   |
 |               | for files that change frequently, such as log files.      |
-               
-- ls Command
+
+
+- ls command    
+
     - Command Options
 
     | **Option** |                    Description                     |
@@ -110,6 +113,7 @@
     |            | otherwise:  sort by access time                    |
     | -X         | sort alphabetically by entry extension             |
 
+
     - 文件列表过滤        
     ls命令的最后可以跟一个字符串，用于过滤文件和目录列表，并支持通配符规则，如：`$ ls -al *.sh` 将只会列出以".sh"结尾的文件和目录。     
 
@@ -129,7 +133,7 @@ file’s permissions.
     　
 #### File Handling
 
-- cp Command Options        
+- `cp` Command Options        
     
     | Option |                        Description                         |
     |--------|------------------------------------------------------------|
@@ -145,6 +149,7 @@ file’s permissions.
     | -u     | Copy the source file only if it has a newer date           |
     |        | and time than the destination (update).                    |
 
+    
 - Linking Files         
     There are two different types of file links in Linux:            
     + A symbolic, or soft, link         
