@@ -34,7 +34,7 @@
     * BSD-style parameters, which are not preceded by a dash
     * GNU long parameters, which are preceded by a double dash
     
-    - Unix-style parameters of `ps` command
+    - Unix-style parameters of `ps` command   
     　　注意，下表中所有选项后跟的 xxlist 参数列表，表示的是一个由多个部分使用逗号“,”连接的列表，如 `-p pidlist` 可以写成 `-p 2457,2578`，其中，2457和2478分别为两个进程的ID号。
     
         | **Parameter** |                         Description                          |
