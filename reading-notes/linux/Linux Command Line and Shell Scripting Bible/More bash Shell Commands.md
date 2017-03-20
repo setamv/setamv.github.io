@@ -12,7 +12,7 @@
 
 #### Monitoring Programs
 
-#### Basic knowledge about process
+##### Basic knowledge about process
 - session       
 　　当一个用户登录到主机，Linux将会建立了一个session，但是该session的维系是基于连接的，其维系的方式有两种：     
     1. 本地连接：就是说用户是在主机本机上进行的登录，直接通过键盘和屏幕和主机进行交互。
@@ -248,7 +248,7 @@
             | COMMAND         | The command line name of the process (program started) |
             |                 |                                                        |
 
-#### Stopping processes
+##### Stopping processes
 
 - Signals
 
@@ -294,3 +294,218 @@
     ```
     $ killall tomcat*   # will kill all processes whoes name start with tomcat.
     ```
+
+#### Monitoring Disk Space
+
+##### Mounting media
+
+- What is the mounting?
+    the Linux filesystem combines all media disks into a single virtual directory. Before you can use a new media disk on your system, you need to place it in the virtual directory. This task is called mounting.
+
+- The `mount` command
+
+    * General Description
+
+        The `mount` command is used to mount media (It's means to place the media in the virtual directory).
+
+        By default, the mount command displays a list of media devices currently mounted on the system: 
+
+        ```
+        $ mount
+        /dev/mapper/VolGroup00-LogVol00 on / type ext3 (rw)
+        proc on /proc type proc (rw)
+        sysfs on /sys type sysfs (rw)
+        devpts on /dev/pts type devpts (rw,gid=5,mode=620)
+        /dev/sda1 on /boot type ext3 (rw)
+        ```
+
+        There are four pieces of information the mount command result provides:
+        1. The device location of the media (It's not the virtual directory, but the real location of hardware, hard disk's location is as '/dev/sda1'). 
+        2. The mount point in the virtual directory where the media is mounted. (This virtual directory can be explorered by `cd` command)
+        3. The filesystem type. There are lots of types. If you share removable media devices with your Windows PCs, the types are most likely to be as followings:
+            - vfat: Windows long filesystem
+            - ntfs: Windows advanced filesystem used in Windows NT, XP, and Vista.
+            - iso9660: The standard CD-ROM filesystem.
+        Most USB memory sticks and floppies are formatted using the vfat filesystem
+        4. The access status of the mounted media
+
+        To manually mount a media device in the virtual directory, you’ll need to be logged in as the root user. 
+        The basic command for manually mounting a media device is:
+            `mount -t type device directory`
+
+        + Example: Manually mount a usb memory device.        
+            1. 首先，如果已经插入USB存储设备，可以使用命令 `$ fdisk -l` 来查看USB存储设备的位置信息（即上面的 device location），下面是命令的结果示例：
+            ```
+            [root@localhost ~]# fdisk -l
+
+            Disk /dev/sda: 42.9 GB, 42949672960 bytes, 83886080 sectors
+            ...
+
+               Device Boot      Start         End      Blocks   Id  System
+            /dev/sda1   *        2048      616447      307200   83  Linux
+            ...
+
+            Disk /dev/sdb: 8527 MB, 8527020032 bytes, 16654336 sectors
+            Units = sectors of 1 * 512 = 512 bytes
+            Sector size (logical/physical): 512 bytes / 512 bytes
+            I/O size (minimum/optimal): 512 bytes / 512 bytes
+            Disk label type: dos
+            Disk identifier: 0xcad4ebea
+
+               Device Boot      Start         End      Blocks   Id  System
+            /dev/sdb4   *         256    16654335     8327040    b  W95 FAT32
+            ```
+            看到上面的最后一行信息 “/dev/sdb4”，这个就是USB存储设备的 device location（USB存储设备的名称都是以sdb开头）。
+            2. 使用mount命令将USB存储设备挂载到(mount to)虚拟目录(Virture directory) “/media/usb”，命令如下：
+                `$ mount -t vfat /dev/sdb4 /medial/usb1`
+            3. 此时，USB存储设备已经挂载完成，挂载的虚拟目录就像普通的文件目录一样，可以使用命令 `cd`、`ls`、`cp`等进行浏览、拷贝等操作了。
+    
+    * `mount` Command options
+    
+        | **Parameter** |                     **Description**                     |
+        |---------------|---------------------------------------------------------|
+        | -a            | Mount all filesystems specified in the /etc/fstab file  |
+        | -f            | Causes the mount command to simulate mounting a device, |
+        |               | but not actually mount it                               |
+        | -t vfstype    | The argument following the -t is used to indicate       |
+        |               | the filesystem type, The filesystem types which are     |
+        |               | currently  supported refer to man help.                 |
+        | -F            | When used with the -a parameter,                        |
+        |               | mounts all filesystems at the same time                 |
+        | -v            | Verbose mode, explains all the steps                    |
+        |               | required to mount the device                            |
+        | -I            | Don’t use any filesystem helper files                   |
+        |               | under /sbin/mount.filesystem                            |
+        | -l            | Add the filesystem labels automatically                 |
+        |               | for ext2, ext3, or XFS filesystems                      |
+        | -n            | Mount the device without registering                    |
+        |               | it in the /etc/mstab mounted device file                |
+        | -p num        | For encrypted mounting, read the passphrase             |
+        |               | from the file descriptor num                            |
+        | -s            | Ignore mount options not supported by the filesystem    |
+        | -r            | Mount the device as read-only                           |
+        | -w            | Mount the device as read-write (the default)            |
+        | -L label      | Mount the device with the specified label               |
+        | -U uuid       | Mount the device with the specified uuid                |
+        | -O            | When used with the -a parameter,                        |
+        |               | limits the set of filesystems applied                   |
+        | -o            | Add specific options to the filesytem,                  |
+        |               | The popular options to use are:                         |
+        |               | ro: Mount as read-only                                  |
+        |               | rw: Mount as read-write.                                |
+        |               | user: Allow an ordinary user to mount the filesystem    |
+        |               | check=none: Mount the filesystem without                |
+        |               | performing an integrity check.                          |
+        |               | loop: Mount a file (see "use `mount` command to mount   |
+        |               | a iso image file with `-o` option" bellow)              |
+        |               |                                                         |
+
+        
+    * use `mount` command to mount a iso image file with `-o` option.
+    
+        The .iso file is a complete image of the CD in a single file. Most CD-burning software packages can create a new CD based on the .iso file. A feature of the mount command is that you can mount a .iso file, directly to your Linux virtual directory without having to burn it onto a CD. This is accomplished using the -o parameter with the loop option.
+
+        The following example use `mount` command to mount a iso image file from directory "/home/setamv/setups/CentOS-7-x86_64-DVD-1611.iso":
+        ```
+        $ mount -t iso9660 -o loop /home/setamv/setups/CentOS-7-x86_64-DVD-1611.iso /mnt/CentOS
+        mount: /dev/loop0 is write-protected, mounting read-only
+        $ ls -acl /mnt/CentOS
+        total 657
+        drwxr-xr-x. 8 root root   2048 Dec  5 05:47 .
+        drwxr-xr-x. 3 root root     20 Mar 20 07:05 ..
+        -rw-r--r--. 1 root root     14 Dec  5 05:47 CentOS_BuildTag
+        -rw-r--r--. 1 root root     29 Dec  5 05:47 .discinfo
+        drwxr-xr-x. 3 root root   2048 Dec  5 05:47 EFI
+        -rw-r--r--. 1 root root    215 Dec  5 05:47 EULA
+        -rw-r--r--. 1 root root  18009 Dec  5 05:47 GPL
+        drwxr-xr-x. 3 root root   2048 Dec  5 05:47 images
+        drwxr-xr-x. 2 root root   2048 Dec  5 05:47 isolinux
+        drwxr-xr-x. 2 root root   2048 Dec  5 05:47 LiveOS
+        drwxrwxr-x. 2 root root 630784 Dec  5 05:47 Packages
+        drwxrwxr-x. 2 root root   4096 Dec  5 05:47 repodata
+        -rw-r--r--. 1 root root   1690 Dec  5 05:47 RPM-GPG-KEY-CentOS-7
+        -rw-r--r--. 1 root root   1690 Dec  5 05:47 RPM-GPG-KEY-CentOS-Testing-7
+        -r--r--r--. 1 root root   2883 Dec  5 05:55 TRANS.TBL
+        -rw-r--r--. 1 root root    366 Dec  5 05:47 .treeinfo
+        ```
+
+
+- The `umount` command、
+
+    To remove a removable media device, you should never just remove it from the system. Instead, you should always unmount it first.
+
+    The command used to unmount devices is `umount` (yes, there’s no ‘‘n’’ in the command, which gets confusing sometimes). The format for the umount command is pretty simple:
+        `umount [directory | device ]`
+    If there are any open files contained on the device, the system won’t let you unmount it.
+
+- The `df` command
+
+    The `df` command shows each mounted filesystem that contains data. The command outputs are as follows:
+
+    ```
+    $ df
+    Filesystem     1K-blocks     Used Available Use% Mounted on
+    /dev/sda3       39517336 19887132  19630204  51% /
+    devtmpfs          923780        0    923780   0% /dev
+    tmpfs             933644        0    933644   0% /dev/shm
+    tmpfs             933644     8804    924840   1% /run
+    tmpfs             933644        0    933644   0% /sys/fs/cgroup
+    /dev/sda1         303780   121904    181876  41% /boot
+    tmpfs             186732        0    186732   0% /run/user/0
+    tmpfs             186732        0    186732   0% /run/user/1000
+    /dev/sdb4        8318720  3841888   4476832  47% /mnt/usb1
+    ```
+    The displayed columns are:
+    1. Filesystem: The device location of the device
+    2. 1K-blocks: How many 1024-byte blocks of data it can hold
+    3. Used: How many 1024-byte blocks are used
+    4. Available: How many 1024-byte blocks are available
+    5. Use%: The amount of used space as a percentage
+    6. Mounted on: The mount point where the device is mounted
+    
+    * `df` Command options
+    
+        | **Option** |                     **Description**                     |
+        |------------|---------------------------------------------------------|
+        | -h         | print sizes in human readable format (e.g., 1K 234M 2G) |
+        | -B SIZE    | scale sizes by SIZE before printing them;               |
+        |            | SIZE is an integer and optional unit.                   |
+        |            | example: 10M is 10*1024*1024,                           |
+        |            | Units are K, M, G, T, P, E, Z, Y (powers of 1024)       |
+        |            | or KB, MB, ... (powers of 1000)                         |
+        |            | The default is 1K                                       |
+        |            |                                                         |
+
+- The the `du` command
+
+    The du command shows the disk usage for a specific directory (by default, the current directory).
+
+    - `du` command options
+        
+        |  **Option** |                       **Description**                        |
+        |-------------|--------------------------------------------------------------|
+        | -a          | write counts for all files, not just directories.            |
+        |             | this option will list all file size and directory sizes.     |
+        | -B SIZE     | scale sizes by SIZE before printing them;                    |
+        |             | SIZE is an integer and optional unit.                        |
+        |             | example: 10M is 10*1024*1024,                                |
+        |             | Units are K, M, G, T, P, E, Z, Y (powers of 1024)            |
+        |             | or KB, MB, ... (powers of 1000)                              |
+        |             | The default is 1K                                            |
+        | -c          | produce a grand total, which will list only the child        |
+        |             | directories' disk usage.                                     |
+        | -d n        | print the total for a directory (or file, with --all)        |
+        |             | only if it's depth in directory of the command line argument |
+        |             | is less equal than n. `-d 0` is the same as `-s`             |
+        | -h          | print sizes in human readable format (e.g., 1K 234M 2G)      |
+        | -s          | display only a total for each argument                       |
+        | -t SIZE     | exclude entries smaller than SIZE if positive,               |
+        |             | or entries greater than SIZE if negative                     |
+        | --time      | show time of the last modification of any file               |
+        |             | in the directory, or any of its subdirectories               |
+        | --time=WORD | show time as WORD instead of modification time:              |
+        |             | atime, access, use, ctime or status                          |
+        | --exclude   | exclude files that match PATTERN, for example:               |
+        | =PATTERN    | `$ du -a --exclude=file*` will filter file                   |
+        |             | whose name start with "file"                                 |
+        |             |                                                              |
