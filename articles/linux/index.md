@@ -1,7 +1,8 @@
+[Home](../../index.md) >> [Articles](../index.md) >> Linux
+
 ### Linux Articles Catalogues
 
-#### Category 1
+#### System Installation
 
-- [Article Title 1]
+- [Linux System Installation](system-installation.md)
 
-#### Category 2

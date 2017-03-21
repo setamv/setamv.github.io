@@ -8,9 +8,14 @@
 - Pages: {121, 120}
 - Reading Time: 16/03/2017 21:08 ~ 16/03/2017 23:31
 
-### Notes
+<span id="chapterList"></span>
+### Chapter List
+- [Monitoring Programs](#monitoringPrograms)
+- [Monitoring Disk Space](#monitoringDiskSpace)
+- [Working with Data Files](#workingWithDataFiles) 
 
-#### Monitoring Programs
+<span id="monitoringPrograms">[Chapter List](#chapterList)</span>
+#### Monitoring Programs 
 
 ##### Basic knowledge about process
 - session       
@@ -56,19 +61,11 @@
         | -F            | Use extra full output                                        |
         | -O format     | Display specific columns in the list format ,                |
         |               | along with the default columns                               |
-        | -M            | Display security information about the process               |
-        | -c            | Show additional scheduler information about the process      |
         | -f            | Display a full format listing                                |
-        | -j            | Show job information                                         |
         | -l            | Display a long listing                                       |
-        | -o format     | Display only specific columns listed in format               |
-        | -y            | Don’t show process flags                                     |
-        | -Z            | Display the security context information, the same with -M   |
         | -H            | Display processes in a hierarchical format                   |
         |               | (showing parent processes)                                   |
         | -n namelist   | Define the values to display in the WCHAN column             |
-        | -w            | Use wide output format, for unlimited width displays         |
-        | -L            | Show process threads                                         |
         | --Headers     | Repeat header lines, one per page of output.                 |
         |               |                                                              |
 
@@ -295,6 +292,7 @@
     $ killall tomcat*   # will kill all processes whoes name start with tomcat.
     ```
 
+<span id="monitoringDiskSpace">[Chapter List](#chapterList)</span>
 #### Monitoring Disk Space
 
 ##### Mounting media
@@ -498,7 +496,9 @@
         |             | only if it's depth in directory of the command line argument |
         |             | is less equal than n. `-d 0` is the same as `-s`             |
         | -h          | print sizes in human readable format (e.g., 1K 234M 2G)      |
-        | -s          | display only a total for each argument                       |
+        | -s          | display only a total for each argument, for example:         |
+        |             | `$ du -sh *` will list all files and child directories'      |
+        |             | size in current directory as argument '*' match everything.  |
         | -t SIZE     | exclude entries smaller than SIZE if positive,               |
         |             | or entries greater than SIZE if negative                     |
         | --time      | show time of the last modification of any file               |
@@ -509,3 +509,101 @@
         | =PATTERN    | `$ du -a --exclude=file*` will filter file                   |
         |             | whose name start with "file"                                 |
         |             |                                                              |
+
+    - example 1: list all files and child directories size in current directory.
+        ```
+        $ du -sh *
+        476K    bin
+        1.4M    bins
+        4.0K    cat.output
+        4.0K    cat.output.bak
+        4.0K    cat.output.cp
+        4.0K    col.ex
+        4.0K    cp1
+        ...
+        ```
+        The command executed above list all files in current directory, if with star, no file will list.
+    
+
+<span id="workingWithDataFiles">[Chapter List](#chapterList)</span>
+#### Working with Data Files 
+
+- `sort` Command
+
+    By default, the sort command sorts the data lines in a text file using standard sorting rules for the language you specify as the default for the session。
+
+    The default rule to sort is take the whole line as a key to compare with. and if you specify `-k` option, the `sort` command will split the whole line into fields(or columns) by seperators which default is _blank(s)_(whitespaces or tabs) or the seperators specified by `-t` option. 
+
+    The `sort` can be used as a pipeline command.
+
+    + `sort` command options
+    
+        | **Option** |                      **Description**                       |
+        |------------|------------------------------------------------------------|
+        | -b         | Ignore leading blanks when sorting.                        |
+        | -c         | Don’t sort, but check if the input data is already sorted. |
+        |            | Report if not sorted.                                      |
+        | -d         | Consider only blanks and alphanumeric characters;          |
+        |            | don’t consider special characters                          |
+        | -f         | By default, sort orders capitalized letters first.         |
+        |            | This parameter ignores case                                |
+        | -g         | Use general numerical value to sort.                       |
+        | -i         | Ignore nonprintable characters in the sort.                |
+        | -k KEYDEF  | sort via a key; KEYDEF gives location and type.            |
+        |            | refered to [KEYDEF](#KEYDEF)                               |
+        | -M         | Sort by month order using three-character month names.     |
+        | -m         | Merge two already sorted data files                        |
+        |            |                                                            |
+
+        * KEYDEF <a id="KEYDEF"></a>
+            KEYDEF is `F[.C][OPTS][,F[.C][OPTS]]` for start and stop position, where `F` is a field number and `C` is a character position in the field; both are origin 1, and the stop position defaults to the line's end.  If neither -t nor -b is in effect, characters in a field are counted from the beginning of the preceding whitespace.  OPTS is one or more single-letter ordering options [bdfgiMhnRrV], which override global ordering options for that key.  If no key is given, use the entire line as the key.
+            
+        * example: 
+            The content of file _sort.data_ is:
+            ```
+            setamv  32,male 78 Nov
+            susie   28,female 86 Aug
+            hong    1,male 95 Mar
+            angel   4,female 94 Aug
+            ```
+            There is a _Tab_ between the first column(setamv) and second column(32,male). and a whitespace between the second column(32,male) and third column(78)
+
+            1. the default sort result
+                ```
+                $ sort sort.data
+                angel   4,female 94 Aug
+                hong    1,male 95 Mar
+                setamv  32,male 78 Nov
+                susie   28,female 86 Aug
+                ```
+
+            2. with `-k` option
+                ```
+                $ sort -k 3 sort.data
+                setamv  32,male 78 Nov
+                susie   28,female 86 Aug
+                angel   4,female 94 Aug
+                hong    1,male 95 Mar
+                ```
+                使用`-k`选项时, 每一行数据都以空白符（空格或Tab）为分割符进行分割成多列（上文中使用field指代列的意思），`-k`选项的参数“3”表示按分割后的第三列进行排序，所以最终结果是以“78、86、94、95”这几个Field为依据排序。
+
+            3. with advanced '-k' option
+                ```
+                $ sort -k 3.3 sort.data
+                angel   4,female 94
+                hong    1,male 95
+                susie   28,female 86
+                setamv  32,male 78
+                ```
+                这个例子，和上一个例子的唯一区别是，`-k`选项的参数更复杂一些，其参数“3.3”表示，根据分割后的第3列中的第3个字符以后的部分排序（这里第3个字符需要将前面的空白分割符也算在内）
+
+            4. sort by three-character month names
+                ```
+                $ sort -M -k 4 sort.data
+                hong    1,male 95 Mar
+                angel   4,female 94 Aug
+                susie   28,female 86 Aug
+                setamv  32,male 78 Nov
+                ```
+                这个例子是按三字母表示法的月份来排序的
+
