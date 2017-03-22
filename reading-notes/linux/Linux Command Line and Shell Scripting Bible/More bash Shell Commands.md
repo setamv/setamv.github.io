@@ -528,6 +528,8 @@
 <span id="workingWithDataFiles">[Chapter List](#chapterList)</span>
 #### Working with Data Files 
 
+##### Sorting Data
+
 - `sort` Command
 
     By default, the sort command sorts the data lines in a text file using standard sorting rules for the language you specify as the default for the session。
@@ -543,16 +545,17 @@
         | -b         | Ignore leading blanks when sorting.                        |
         | -c         | Don’t sort, but check if the input data is already sorted. |
         |            | Report if not sorted.                                      |
-        | -d         | Consider only blanks and alphanumeric characters;          |
-        |            | don’t consider special characters                          |
         | -f         | By default, sort orders capitalized letters first.         |
         |            | This parameter ignores case                                |
         | -g         | Use general numerical value to sort.                       |
-        | -i         | Ignore nonprintable characters in the sort.                |
         | -k KEYDEF  | sort via a key; KEYDEF gives location and type.            |
         |            | refered to [KEYDEF](#KEYDEF)                               |
         | -M         | Sort by month order using three-character month names.     |
         | -m         | Merge two already sorted data files                        |
+        | -n         | Sort by string numerical value                             |
+        | -o file    | Write results to file specified.                           |
+        | -r         | Reverse the sort order (descending instead of ascending.   |
+        | -t         | Specify the character used to distinguish key positions.   |
         |            |                                                            |
 
         * KEYDEF <a id="KEYDEF"></a>
@@ -561,49 +564,227 @@
         * example: 
             The content of file _sort.data_ is:
             ```
-            setamv  32,male 78 Nov
-            susie   28,female 86 Aug
-            hong    1,male 95 Mar
-            angel   4,female 94 Aug
+            setamv  32  male 78 Nov
+            susie   28  female 86 Aug
+            hong    1   male 95 Mar
+            angel   4   female 94 Aug
             ```
-            There is a _Tab_ between the first column(setamv) and second column(32,male). and a whitespace between the second column(32,male) and third column(78)
+            There is a _Tab_ between the first column(setamv) and second column(32). and a whitespace between the third column(male) and fourth column(78)
 
             1. the default sort result
                 ```
                 $ sort sort.data
-                angel   4,female 94 Aug
-                hong    1,male 95 Mar
-                setamv  32,male 78 Nov
-                susie   28,female 86 Aug
+                angel   4   female 94 Aug
+                hong    1   male 95 Mar
+                setamv  32  male 78 Nov
+                susie   28  female 86 Aug
                 ```
 
             2. with `-k` option
                 ```
-                $ sort -k 3 sort.data
-                setamv  32,male 78 Nov
-                susie   28,female 86 Aug
-                angel   4,female 94 Aug
-                hong    1,male 95 Mar
+                $ sort -k 4 sort.data
+                hong    1   male 95 Mar
+                susie   28  female 86 Aug
+                setamv  32  male 78 Nov
+                angel   4   female 94 Aug
                 ```
-                使用`-k`选项时, 每一行数据都以空白符（空格或Tab）为分割符进行分割成多列（上文中使用field指代列的意思），`-k`选项的参数“3”表示按分割后的第三列进行排序，所以最终结果是以“78、86、94、95”这几个Field为依据排序。
+                使用`-k`选项时, 每一行数据都以空白符（空格或Tab）为分割符进行分割成多列（上文中使用field指代列的意思），`-k`选项的参数“2”表示按分割后的第2列进行排序，所以最终结果是以“1,28,32,4”这几个Field为依据排序（默认按字典排序）。
 
             3. with advanced '-k' option
                 ```
-                $ sort -k 3.3 sort.data
-                angel   4,female 94
-                hong    1,male 95
-                susie   28,female 86
-                setamv  32,male 78
+                $ sort -k 4.3 sort.data
+                angel   4   female 94 Aug
+                hong    1   male 95 Mar
+                susie   28  female 86 Aug
+                setamv  32  male 78 Nov
                 ```
-                这个例子，和上一个例子的唯一区别是，`-k`选项的参数更复杂一些，其参数“3.3”表示，根据分割后的第3列中的第3个字符以后的部分排序（这里第3个字符需要将前面的空白分割符也算在内）
+                这个例子，和上一个例子的唯一区别是，`-k`选项的参数更复杂一些，其参数“4.3”表示，根据分割后的第4列中的第3个字符以后的部分排序(即 4,5,6,8这4个数字，这里第3个字符需要将前面的空白分割符也算在内）
 
             4. sort by three-character month names
                 ```
-                $ sort -M -k 4 sort.data
-                hong    1,male 95 Mar
-                angel   4,female 94 Aug
-                susie   28,female 86 Aug
-                setamv  32,male 78 Nov
+                $ sort -M -k 5 sort.data
+                hong    1   male 95 Mar
+                angel   4   female 94 Aug
+                susie   28  female 86 Aug
+                setamv  32  male 78 Nov
                 ```
                 这个例子是按三字母表示法的月份来排序的
+
+##### Searching for data
+
+- `grep` Command
+    
+    `grep [OPTIONS] PATTERN [FILE...]`
+
+    The grep command searches either the input or the file you specify for lines that contain characters that match the specified pattern. The output from grep is the lines that contain the matching pattern.     
+
+    The `grep` command can be used as a pipline command.
+
+    By default, the grep command uses basic Unix-style regular expressions to match patterns. A Unix-style regular expression uses special characters to define how to look for matching patterns。
+
+    The `egrep` command is an offshoot of `grep`, which allows you to specify POSIX extended regular expressions, which contain more characters for specifying the matching pattern.
+
+    The `fgrep` command is another version that allows you to specify matching patterns as a list of fixed-string values, separated by newline characters. This allows you to place a list of strings in a file, then use that list in the fgrep command to search for the strings in a larger file.
+
+    Question: How to combine regular expressions to `grep` command?
+
+    + `grep` Command Options
+    
+        | **Option** |                         **Description**                          |
+        |------------|------------------------------------------------------------------|
+        | -e PATTERN | Use PATTERN as the pattern.                                      |
+        |            | This can be used to specify multiple search patterns,            |
+        |            | or to protect a pattern beginning with a hyphen (-)              |
+        |            | The output is lines matches any of the PATTERN                   |
+        | -v         | Invert the sense of matching, to select non-matching lines       |
+        | -i         | Ignore case distinctions in both the PATTERN and the input files |
+        | -w         | Select lines containing matches that form whole words            |
+        | -x         | Select only those matches that exactly match the whole line      |
+        | -c         | Suppress normal output;                                          |
+        |            | instead print a count of matching lines for each input file      |
+        | -l         | Only print file names who contain matched line(s)                |
+        | -L         | On the contrary to the option `-l`, this option will only        |
+        |            | print file names who don't contain matched line                  |
+        | -m NUM     | Stop reading a file after NUM matching lines                     |
+        | -q         | Quiet;  do not write anything to standard output.  Exit          |
+        |            | immediately with zero status if any match is found,              |
+        |            | even if an error was detected。See example 3 below.              |
+        | -s         | Suppress error messages about nonexistent or unreadable files    |
+        | -n         | Prefix each line of output with the 1-based line number          |
+        |            | within its input file                                            |
+        | -A NUM     | Print NUM lines of trailing context after matching lines         |
+        | -B NUM     | Print NUM lines of leading context before matching lines         |
+        | -C NUM     | means `-A NUM -B NUM`, print both trailing and leading context   |
+        | -r         | Read  all  files  under each directory, recursively,             |
+        |            | following symbolic links only if they are on the command line    |
+        | -R         | Read all files under each directory, recursively.                |
+        |            | Follow all symbolic links, unlike -r                             |
+        | -f         | Obtain  patterns  from  FILE,  one  per line.  The empty file    |
+        |            | contains zero patterns, and therefore matches nothing            |
+
+        **examples**
+        
+        The following examples are base on file `grep.log` with content as followings:
+        ```
+        MANDATORY_MANPATH           /usr/share/man
+        MANDATORY_MANPATH           /usr/local/share/man
+        MANPATH_MAP /bin            /usr/share/man
+        MANPATH_MAP /usr/bin/X11        /usr/X11R6/man
+        MANPATH_MAP /opt/bin        /opt/man
+        MANPATH_MAP /opt/sbin       /opt/man
+        MANDB_MAP   /usr/X11R6/man      /var/cache/man/X11R6
+        MANDB_MAP   /opt/man        /var/cache/man/opt
+        ```
+
+        * Example 1: `-e` Option 
+            
+            ```
+            $ grep -e MANDB_MAP -e X11R6 grep.log
+            MANPATH_MAP /usr/bin/X11        /usr/X11R6/man
+            MANDB_MAP   /usr/X11R6/man      /var/cache/man/X11R6
+            MANDB_MAP   /opt/man        /var/cache/man/opt
+            ```
+            Pay attention to outputs, the first line only match the second pattern "X11R6", it's also joined to the output.
+
+        * Example 2: `-w` Option
+            
+            ```
+            $ grep -w MANDB_MAP grep.log
+            MANDB_MAP   /usr/X11R6/man      /var/cache/man/X11R6
+            MANDB_MAP   /opt/man        /var/cache/man/opt
+
+            $ grep -w MANDB grep.log
+
+            ```
+            The second command has no output, as pattern "MANDB" don't match any word.
+
+        * Example 3: `-q` and `-s` Options
+        
+            ```
+            $ grep -q MAN grep.log
+            $ echo $?
+            0
+
+            $ grep -q MAN grep.log1
+            grep: grep.log1: No such file or directory
+            $ echo $?
+            2
+
+            $ grep -qs MAN grep.log1
+            $ echo $?
+            2
+            ```
+            可以看到：
+            1. 第一段的执行结果为0，表示有匹配的结果；
+            2. 第二段，因为`grep.log1`文件不存在，所以打印了错误信息，同时返回结果为2
+            3. 第三段，因为加了`-s`选项，错误信息被压制了，但返回结果还是2
+        
+##### Compressing data
+
+- Linux File Compression Utilities
+
+    This is a table about the file compression utilities in linux:
+
+    | **Utilities** | **File extension** |             **Description**             |
+    |---------------|--------------------|-----------------------------------------|
+    | bzip2         | .bz2               | Uses the Burrows-Wheeler block          |
+    |               |                    | sorting text compression algorithm      |
+    |               |                    | and Huffman coding                      |
+    | compress      | .Z                 | Original Unix file compression utility; |
+    |               |                    | starting to fade away into obscurity    |
+    | gzip          | .gz                | The GNU Project’s compression utility;  |
+    |               |                    | uses Lempel-Ziv coding                  |
+    | zip           | .zip               | The Unix version of the PKZIP program   |
+    |               |                    | for Windows                             |
+    |               |                    |                                         |
+
+- The bzip2 utility
+    
+    The utilities in the bzip2 package are：
+
+    | **Utility**  |                   **Description**                    |
+    |--------------|------------------------------------------------------|
+    | bzip2        | for compressing files                                |
+    | bzcat        | for displaying the contents of compressed text files |
+    | bunzip2      | for uncompressing compressed .bz2 files              |
+    | bzip2recover | for attempting to recover damaged compressed files   |
+    |              |                                                      |    
+
+    其实，`bzip2`、`bzcat`、`bunzip2`这3个命令是执行的同一个程序，只是根据命令的名称，默认执行的参数选项不一样。你也可以使用`bunzip2`命令加上`-z`选项来执行压缩，而不是解压。所以，以下的命令选项对它们三个命令都适用：
+
+    | **Option** |                         **Description**                         |
+    |------------|-----------------------------------------------------------------|
+    | -c         | Compress or decompress to standard output                       |
+    | -d         | Force decompression. bzip2, bunzip2 and bzcat are really        |
+    |            | the same program, and the decision about what actions to  take  |
+    |            | is done on the basis of which name is used. This flag           |
+    |            | overrides that mechanism, and forces bzip2 to decompress        |
+    | -z         | The complement to -d: forces compression, regardless of the     |
+    |            | invocation name                                                 |
+    | -t         | Check  integrity of the specified file(s), but don't decompress |
+    |            | them.  This really performs a trial decompression and           |
+    |            | throws away the result.                                         |
+    | -f         | Force overwrite of output files.  Normally, bzip2 will not      |
+    |            | overwrite existing output files                                 |
+    | -k         | Keep (don't delete) input files during compression              |
+    |            | or decompression                                                |
+    |            |                                                                 |
+
+    + `bizp2` Command
+    
+        By default, the bzip2 command attempts to compress the original file, and **_replaces it with the compressed file_**, using the same filename with a .bz2 extension
+
+        Return  values:  
+        * 0 for a normal exit, 
+        * 1 for environmental problems (file not found, invalid flags, I/O errors, &c), 
+        * 2 to indicate a corrupt compressed file, 
+        * 3 for an internal consistency error (eg, bug) which caused bzip2 to panic
+    
+    + `bunzip2` Command
+
+        Supplying no filenames to `bunzip2` will causes decompression from standard input to standard output.
+        for example:
+            `$ cat some_zipped_file.bz2 | bunzip2`
+        will decompress the content of file "some_zipped_file.bz2" and then print the uncompressed content to standard output.
+
 
