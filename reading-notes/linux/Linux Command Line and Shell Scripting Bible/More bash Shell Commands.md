@@ -6,7 +6,7 @@
 - Book: Linux Command Line and Shell Scripting Bible
 - Chapter: Chapter 4: More bash Shell Commands
 - Pages: {121, 120}
-- Reading Time: 16/03/2017 21:08 ~ 16/03/2017 23:31
+- Reading Time: 16/03/2017 21:08 ~ 26/03/2017 23:31
 
 <span id="chapterList"></span>
 ### Chapter List
@@ -788,3 +788,31 @@
         will decompress the content of file "some_zipped_file.bz2" and then print the uncompressed content to standard output.
 
 
+- `tar` Command to archive data
+
+    The tar command was originally used to write files to a tape device for archiving. However, it can also write the output to a file.
+    The format of the tar command is:
+        `tar function [options] object1 object2 ...`
+    The function parameter defines what the tar command should do, as shown in Table bellow:
+
+    | **Function** | **Description**                                               |
+    | -A           | Append an existing tar archive file to another existing       |
+    |              | tar archive file                                              |
+    | -c           | Create a new tar archive file                                 |
+    | -d           | Check the differences between a tar archive file and          |
+    |              | the filesystem.                                               |
+    | -r           | Append files to the end of an existing tar archive file       |
+    | -t           | List the contents of an existing tar archive file.            |
+    | -u           | Append files to an existing tar archive file that are newer   |
+    |              | than a file with the same name in the existing archive.       |
+    | -x           | Extract files from an existing archive file.                  |
+    | -f file      | Output results to file (or device) file. 当使用`-c`选项进行   |
+    |              | 打包时，file指定了打包文件的保存路径；当使用`-c`选项进行      |
+    |              | 解包时，file指定了要解包的tar文件路径。                       |
+    | -j           | Redirect output to the bzip2 command for compression          |
+    | -p           | Preserve all file permissions.                                |
+    | -v           | List files as they are processed                              |
+    | -z           | Redirect the output to the gzip command for compression       |
+    | -C dir       | Change to the specified directory。当使用`-x`选项进行解包时， |
+    |              | 默认是解包到当前目录下，如果要解包到其他目录，                |
+    |              | 必须使用`-C dir`选项进行指定。                                |
