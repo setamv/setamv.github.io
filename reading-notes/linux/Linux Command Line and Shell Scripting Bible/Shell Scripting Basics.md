@@ -236,7 +236,7 @@
 
 
 
-### Pipes <a id="#P">[≡](#≡)</a>
+### Pipes <a id="P">[≡](#≡)</a>
 
 Instead of redirecting the output of a command to a file, you can redirect the output to another command. This process is called piping. The pipe symbol is the bar operator (|):
     `command1 | command2`
@@ -248,7 +248,7 @@ For example, you can first sort the `rpm` output and then read the sorted output
     $ rpm -qa | sort | more
     ```
 
-### Performing Math <a id="#PM">[≡](#≡)</a>
+### Performing Math <a id="PM">[≡](#≡)</a>
 
 There a two different ways to perform mathematical operations in your shell scripts。
 

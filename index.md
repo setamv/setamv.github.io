@@ -2,11 +2,11 @@
 
 ## Introduction
 
-    This is the index page of setamv's knowledge base. It's also the _navigation_ of the whole project.
+This is the index page of setamv's knowledge base. It's also the _navigation_ of the whole project.
 
 ## Markdown Edition Format Specification
 
-    This is the specification to markdown edition format applied throughout the whole konwledge base project. You should comply with the [markdown edition format specification](edition-format-specification.md).
+This is the specification to markdown edition format applied throughout the whole konwledge base project. You should comply with the [markdown edition format specification](edition-format-specification.md).
 
 
 
