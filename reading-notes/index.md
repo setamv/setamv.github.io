@@ -1,4 +1,4 @@
-[Back](../index.md)
+[Home](../index.md)
 
 ### Reading Notes
 

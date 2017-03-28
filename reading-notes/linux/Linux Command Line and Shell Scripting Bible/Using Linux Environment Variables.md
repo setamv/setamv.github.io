@@ -5,8 +5,8 @@
 ### Profile
 - Book: Linux Command Line and Shell Scripting Bible
 - Chapter: Chapter 5: Using Linux Environment Variables
-- Pages: {121, 120}
-- Reading Time: 27/03/2017 21:08 ~ 16/03/2017 23:31
+- Pages: {153, 176}
+- Reading Time: 27/03/2017 6:40 ~ 8:00
 
 <span id="chapterList"></span>
 ### Chapter List
@@ -83,7 +83,8 @@
 
     There are specific environment variables that the bash shell uses by default to define the system environment. The table bellow shows some important default environment variables:
 
-    | **Variable** | **Description**                                                 |
+    | **Variable** |                         **Description**                         |
+    |--------------|-----------------------------------------------------------------|
     | CDPATH       | A colon-separated list of directories used as a search path for |
     |              | the cd command                                                  |
     | HOME         | The current user’s home directory                               |
@@ -165,6 +166,7 @@
             $ echo $mytest
             var1
             $ echo ${mytest[*]}
+            var1 var2 var3 var4 var5
             ```
         Note that: 
         1) Reference the whole array will only display the first value.  
@@ -192,3 +194,5 @@
 
 <span id="UsingCommandAliases">[Chapter List](#chapterList)</span>
 #### Using Command Aliases        
+
+- 
