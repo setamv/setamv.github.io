@@ -7,7 +7,13 @@
 ## Reading Notes List
 
 - [Basic bash Shell Commands](Basic bash Shell Commands.md)     
+
 - [More bash Shell Commands](More bash Shell Commands.md)
+
 - [Using Linux Environment Variables](Using Linux Environment Variables.md)
+
 - [Understanding Linux File Permissions](Understanding Linux File Permissions.md)
-- [Shell Scripting Basics](Shell Scripting Basics.md)
+
+- [Basic Script Building](Basic Script Building.md)
+
+- [Using Structured Commands](Using Structured Commands.md)
