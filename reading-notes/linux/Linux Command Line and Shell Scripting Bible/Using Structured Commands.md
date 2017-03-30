@@ -6,7 +6,7 @@
 - Book: Linux Command Line and Shell Scripting Bible
 - Chapter: Chapter 9: Using Structured Commands
 - Pages: {259, }
-- Reading Time: 29/03/2017 21:07 ~ 
+- Reading Time: 29/03/2017 21:07 ~ 30/03/2017 23:22
 
 ## Content Navigation <a id="≡"></a>
 - [if-then Statement](#ITS)
