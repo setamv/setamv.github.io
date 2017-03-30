@@ -295,7 +295,9 @@ There a two different ways to perform mathematical operations in your shell scri
     |                     |                                                         |
     | index STRING CHARS  | Return position in STRING where CHARS is found;         |
     |                     | otherwise, return 0                                     |
-    | length STRING       | Return the numeric length of the string STRING          |
+    | length STRING       | Return the numeric length of the string STRING.         |
+    |                     | the STRING can not be empty, if it's empty,             |
+    |                     | `expr` will output an error.                            |
     | + TOKEN             | Interpret TOKEN as a string, even if it’s a keyword     |
     | (EXPRESSION)        | Return the value of EXPRESSION                          |
 
@@ -312,6 +314,8 @@ There a two different ways to perform mathematical operations in your shell scri
 - Using brackets
 
     The bash shell includes the expr command to stay compatible with the Bourne shell; however, it also provides a much easier way of performing mathematical equations. In bash, when assigning a mathematical value to a variable, you can enclose the mathematical equation using a dollar sign and square brackets `$[ operation ]`
+
+    Be carefull that, the _operation_ can not be string caculation like `length STRING` in `expr` command.
 
     Using brackets makes shell math much easier than with the `expr` command:
 

@@ -16,6 +16,11 @@
     + [Numeric comparisons](#TC-NC)
     + [String comparisons](#TC-SC)
     + [File comparisons](#TC-FC)
+- [Compound Condition Testing](#CCT)
+- [Advanced if-then Features](#AITF)
+    + [Using double parentheses](#AITF-UDP)
+    + [Using double brackets](#AITF-UDB)
+- [The case Command](#CaseC)
 
 ## Reading Notes
 
@@ -214,6 +219,22 @@ The table bellow shows the comparison functions you can use to evaluate two stri
 | -n str1        | Check if str1 has a length greater than zero. |
 | -z str1        | Check if str1 has a length of zero.           |
 
+? When a variable's value is '', both `-n str` and `-z str` are true:       
+```
+$ cat test
+#!/bin/bash
+var1=''
+if test -n $var1; then
+   echo "'$var1' is not empty."
+fi
+if test -z $var1; then
+   echo "'$var1' is empty."
+fi
+$ ./test
+'' is not empty.
+'' is empty
+```
+**_Why_** ?
 
 ##### String equality
 
@@ -307,8 +328,215 @@ Trying to determine if one string is less than or greater than another is where 
 
     Notice that the `test` command uses the standard mathematical comparison symbols for string comparisons, and text codes for numerical comparisons. This is a subtle feature that many programmers manage to get reversed. If you use the mathematical comparison symbols for numeric values, the shell interprets them as string values and may not produce the correct results.
 
-
-
 #### File comparisons <a id="TC-FC">[≡](#≡)</a>
 
+The test command allows you to test the status of files and directories
+on the Linux filesystem, the table bellow list these comparisions:
 
+| **Comparision** |                    **Description**                     |
+|-----------------|--------------------------------------------------------|
+| -d file         | Check if file exists and is a directory                |
+| -e file         | Checks if file exists                                  |
+| -f file         | Checks if file exists and is a file                    |
+| -r file         | Checks if file exists and is readable                  |
+| -s file         | Checks if file exists and is not empty                 |
+| -w file         | Checks if file exists and is writable                  |
+| -x file         | Checks if file exists and is executable                |
+| -O file         | Checks if file exists and is owned by the current user |
+| -G file         | Checks if file exists and the default group is         |
+|                 | the same as the current user.                          |
+| file1 -nt file2 | Checks if file1 is newer than file2                    |
+| file1 -ot file2 | Checks if file1 is older than file2.                   |
+
+##### Checking directories
+
+The -d test checks if a specified filename exists as a directory on the system. The following example is check the _HOME_ directory first and then list the content:    
+```
+$ cat test
+#!/bin/bash
+dir=$HOME/shellex
+if [ -d $dir ]; then
+   echo "directory '$dir' exists. list content:"
+   ls -al $dir
+else
+   echo "directory '$dir' not exists."
+fi
+```
+
+
+### Compound Condition Testing <a id="CCT">[≡](#≡)
+
+The `if-then` statement allows you to use Boolean logic to combine tests. There are two Boolean operators you can use:
+
+1. [ condition1 ] && [ condition2 ]
+2. [ condition1 ] || [ condition2 ]
+
+The first Boolean operation uses the AND Boolean operator to combine two conditions. Both
+conditions must be met for the then section to execute.
+
+The second Boolean operation uses the OR Boolean operator to combine two conditions. If either condition evaluates to a true condition, the then section is executed.
+
+
+### Advanced if-then Features <a id="AITF">[≡](#≡)
+
+There are two relatively recent additions to the bash shell that provide advanced features that you can use in if-then statements:
+
+1. Double parentheses for mathematical expressions
+2. Double square brackets for advanced string handling functions
+
+
+#### Using double parentheses <a id="AITF-UDP">[≡](#≡)
+
+Since the `test` command only allows for simple arithmetic operations in the comparison. The double parentheses command provides more mathematical symbols that programmers from other languages are used to using. The format of the double parentheses command is:      
+    
+`(( expression1, expression2, ... ))`
+
+The expression term can be any mathematical assignment or comparison expression.        
+Table bellow shows the list of operators available for use in the double parentheses command:
+
+|  **Symbol**  |                **Description**                |
+|--------------|-----------------------------------------------|
+| num1 == num2 | test if num1 is equal to num2, if true,       |
+|              | the expression's exit code will be 0, else 1  |
+| num1 != num2 | test if num1 is not equal to num2, if true,   |
+|              | the expression's exit code will be 0, else 1  |
+| num1 > num2  | test if num1 is greater than num2             |
+| num1 >= num2 | test if num1 is greater than or equal to num2 |
+| num1 < num2  | test if num1 is less than num2                |
+| num1 <= num2 | test if num1 is less than or equal to num2    |
+| val++        | post-increment                                |
+| val--        | post-decrement                                |
+| ++val        | pre-increment                                 |
+| --val        | pre-decrement                                 |
+| !            | logical negation                              |
+| ~            | bitwise negation                              |
+| **           | exponentiation                                |
+| <<           | left bitwise shift                            |
+| >>           | right bitwise shift                           |
+| &            | bitwise Boolean AND                           |
+| 竖线         | bitwise Boolean OR                            |
+| &&           | logical AND                                   |
+| 双竖线       | logical OR                                    |
+
+
+**_Notice_**:
+
+1. You don’t need to escape the greater-than symbol in the expression within the double parentheses. 
+2. You don't need to place whitespace between operator and operand and parenthes.
+3. You can reference a variable' value without a dollar sign '$'. For example:
+    ```
+    $ a=1
+    $ ((a=a+1))
+    $ echo $a
+    2
+    $ (( a = $a+1 ))
+    $ echo $a
+    3
+    ```
+    If you want to set a value to a variable, you must not add the dollar sign, like:    
+    `$ (($a=$a+1))`
+    will output an error as the left operand `$a` is not a variable, it's a number.
+4. You can place multiple expression in double parentheses, expressions are separated by comma ','.
+5. Prepend a dollar sign($) to double parentheses means return the last expression's result in double parenthese.
+
+Example:
+
++ Use double parentheses to caculate numbers.       
+
+    ```
+    $ cat test.sh
+    a=1
+    b=2
+    c=3
+
+    ((a=a+1))
+    echo $a
+
+    a=$((a+1, b++, c--))
+    echo $a, $b, $c
+
+    $ ./test.sh
+    2
+    3, 3, 2
+    ```
+    
+    When execute the script `a=$((a+1, b++, c--))`, the result of last expression `c--` will be returned and set to variable a, and be careful, the `c--` will return the value of c before decrement.
+
++ Use double parentheses in `if-the`
+
+    ```
+    #!/bin/bash
+    $ cat test.sh
+    a=1
+    b=2
+    if ((++a == b)); then
+       echo "++a is equal to b"
+    else
+       echo "++a is not equal to b"
+    fi
+
+    $ ./test.sh
+    ++a is equal to b
+    ```
+
+
+#### Using double brackets <a id="AITF-UDB">[≡](#≡)
+
+The double bracket command provides advanced features for string comparisons. The double
+bracket command format is:
+
+`[[ expression ]]`
+
+**_Note_** 
+
+1. You must place whitespace between expression and cracket, but no whitespace is needed between operator and operands in expression, so , you can write as `[[ $USER==setamv ]]`  or `[[ $USER == setamv ]]`,  but you can't write as `[[$USER == setamv]]`. 
+2. You must reference a variable with the dollar sign in expression.
+2. You need not escape greater than symbol in expression
+3.  [[ ]] 中字符串或者${}变量尽量使用”” 双引号扩住，如未使用”“会进行模式和元字符匹配 
+
+The double bracketed expression uses the standard string comparison used in the test command. However, it provides an additional feature that the test command doesn’t,  pattern matching.
+
+In pattern matching, you can define a regular expression that’s matched against the string value:   
+```
+$ cat test.sh
+#!/bin/bash
+if [[ $USER == se* ]]; then
+   echo "The current user $USER is start with se"
+else
+   echo "The current user $USER is not start with se"
+fi
+
+$ ./test.sh
+The current user setamv is start with se
+```
+
+
+### The case Command <a id="CaseC">[≡](#≡)
+
+The case command checks multiple values of a single variable in a list-oriented format:  
+```
+case variable in
+pattern1 | pattern2) commands1;;
+pattern3) commands2;;
+*) default commands;;
+esac
+```
+
+Example:    
+```
+$ cat test.sh
+#!/bin/bash
+case $USER in
+setamv) 
+   echo "current user is setamv";;
+susie)
+   echo "current user is susie";;
+hong | angel)
+   echo "current user is hong";;
+*)
+   echo "current user is unknown-$USER";;
+esac
+
+$ ./test.sh
+current user is setamv
+```
