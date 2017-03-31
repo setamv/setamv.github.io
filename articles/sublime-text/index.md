@@ -1,10 +1,32 @@
 ### Sublime Text Articles Catalogues
 
+#### Sublime Text 配置
+
+- 设置Tab键自动转换空格
+
+    在 Preferences/Package Settings/Package Control/Settings - User 中添加如下内容：
+    ```
+    {
+        "tab_size": 4,
+        "translate_tabs_to_spaces": true
+    }
+    ```
+
 #### Plugins
 
 ##### Markdown Plugins
 - **Markdown Editing Plugin**     
-    　　Markdown Editing Plugin是一个用于编辑Markdown的插件。
+    Markdown Editing Plugin是一个用于编辑Markdown的插件。
+    如果只需要指定Markdown Editing Plugin处理特定类型的文件，可以通过添加如下内容到 Preferences/Package Settings/Markdown Editing/Markdown GMF Setting - USER 来进行设置：
+    ```
+    {
+        "extensions":
+        [
+            "md",
+            "mdown"
+        ]
+    }
+    ```
 
 - **Markdown Preview Plugin**   
     　　Markdown Priview Plugin是一个预览Markdown的插件，在Sublime Text选择菜单Preferences–>Package Control（快捷键 ctrl+shift+p）中，输入 “*Markdown Preview*”，然后选中 “*Preview In Browser*”，即可在浏览器中查看当前文档的Markdown效果。      

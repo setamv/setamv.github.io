@@ -369,7 +369,7 @@ fi
 The `if-then` statement allows you to use Boolean logic to combine tests. There are two Boolean operators you can use:
 
 1. [ condition1 ] && [ condition2 ]
-2. [ condition1 ] || [ condition2 ]
+2. [ condition1 ] 双竖线 [ condition2 ]
 
 The first Boolean operation uses the AND Boolean operator to combine two conditions. Both
 conditions must be met for the then section to execute.

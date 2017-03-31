@@ -17,3 +17,5 @@
 - [Basic Script Building](Basic Script Building.md)
 
 - [Using Structured Commands](Using Structured Commands.md)
+
+- [More Structured Commands](More Structured Commands.md)
