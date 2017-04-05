@@ -80,6 +80,25 @@
         echo $var2
         ```
 
+    You can use a variable through multiple ways:
+    1. place a dollar sign before the variable name, like:      
+        ```
+        $ name=setamv
+        $ echo $name
+        ```
+    2. place the variable name between bracket and preceding a dollar sign, like:   
+        ```
+        $ name=setamv
+        $ echo ${name}
+        ```
+    3. you can reference the variable name by another variable, like:       
+        ```
+        $ name=setamv
+        $ varname=name
+        $ echo ${!varname}
+        ```
+        you can't use `$ echo ${$varname}`, it's result is weirdo.
+
 - The backtick
 
     The backtick allows you to assign the **output** of a shell command to a variable. You must surround the entire command line command with backtick characters:      
