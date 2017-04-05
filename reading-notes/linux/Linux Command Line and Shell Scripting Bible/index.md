@@ -19,3 +19,5 @@
 - [Using Structured Commands](Using Structured Commands.md)
 
 - [More Structured Commands](More Structured Commands.md)
+
+- [Handling User Input](Handling User Input.md)
