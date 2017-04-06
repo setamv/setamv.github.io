@@ -4,7 +4,7 @@
 
 ## Profile
 - Book: Linux Command Line and Shell Scripting Bible
-- Chapter: Chapter 9: More Structured Commands.md
+- Chapter: Chapter 10: More Structured Commands.md
 - Pages: {259, }
 - Reading Time: 31/03/2017 07:47 ~ 31/03/2017 23:00
 

@@ -4,9 +4,9 @@
 
 ## Profile
 - Book: Linux Command Line and Shell Scripting Bible
-- Chapter: Chapter 9: Handling User Input
-- Pages: {259, }
-- Reading Time: 31/03/2017 19:8 ~ 
+- Chapter: Chapter 11: Handling User Input
+- Pages: {, }
+- Reading Time: 06/04/2017 19:08 ~ 07/04/2017 21:13
 
 ## Content Navigation <a id="≡"></a>
 - [Command Line Parameters](#CLP)
@@ -31,6 +31,8 @@
 - [Getting User Input](#GUI)
   + [Basic reading](#GUI-BR)
   + [Timing out](#GUI-TO)
+  + [Silent reading](#GUI_SR)
+  + [Reading from a file](#GUI_RFAF)
 
 
 ## Reading Notes
@@ -244,7 +246,7 @@ On the surface, there’s nothing all that special about command line options. T
 
 As you extract each individual parameter, use the case statement to determine when a parameter is formatted as an option, for example:       
 ```
-$!/bin/bash
+#!/bin/bash
 
 $ cat option.sh 
 #!/bin/bash
@@ -381,6 +383,8 @@ The command above uses `getopt` command to format the command line parameters, a
 
 Example:       
 ```
+#!/bin/bash
+
 $ cat option.sh 
 #!/bin/bash
 echo "Origin options and parameter: $@"
@@ -514,6 +518,8 @@ There are times when you need to ask a question while the script is running and 
 The `read` command accepts input from the standard input (the keyboard), or from another file descriptor. After receiving the input, the read command places the data into a
 standard variable. For example:   
 ```
+#!/bin/bash
+
 $ cat read.sh 
 #!/bin/bash
 #basic read
@@ -530,6 +536,8 @@ Notice that the `echo` command that produced the prompt uses the _-n_ option. Th
 to enter data immediately after the string. The `read` command includes the `-p` option, which provide the same usage as `echo -n` and allows you to specify a prompt directly
 in the `read` command line:   
 ```
+#!/bin/bash
+
 $ cat read.sh 
 #!/bin/bash
 #basic read
@@ -543,6 +551,8 @@ your name is setamv
 
 You can specify multiple variables. Each data value entered is assigned to the next variable in the list. If the list of variables runs out before the data does, the remaining data is assigned to the last variable, for example:   
 ```
+#!/bin/bash
+
 $ cat read.sh 
 #!/bin/bash
 #basic read
@@ -570,3 +580,82 @@ your first name is 'setamv luo', last name is 'anythingelse'
 You can also specify no variables on the read command line. If you do that, the read command places any data it receives in the special environment variable `REPLY`:
 
 #### Timing out <a id="GUI-TO">[≡](#≡)</a>
+
+you can use the -t option specify a timer. The -t option specifies the number of seconds
+for the read command to wait for input. When the timer expires, the read command returns a non-zero exit status. For example:     
+``` 
+#!/bin/bash
+
+$ cat option.sh
+#!/bin/bash
+if read -p "please enter your name: " -t 5 name
+then
+   echo "Your name is $name"
+else
+   echo "Timeout, You must enter your name in 5 seconds."
+fi
+
+$ ./option.sh 
+please enter your name: You must enter your name in 5 seconds.
+```
+
+Instead of timing the input, you can also set the read command to count the input characters by option `-n num` where num is the count of the input characters. When a preset number of characters has been entered, it **automatically** exits, assigning the entered data to the variable:    
+```
+#!/bin/bash
+
+$ cat option.sh 
+#!/bin/bash
+
+read -n 1 -p "Do you want to continue [Y/N]? " answer
+case $answer in
+   Y | y) echo
+          echo "fine, continue on...";;
+   N | n) echo
+          echo "OK, goodbye"
+          exit;;
+esac
+echo "This is the end of the script."
+
+$ ./option.sh 
+Do you want to continue [Y/N]? Y
+fine, continue on...
+This is the end of the script.
+```
+
+#### Silent reading <a id="GUI-SR">[≡](#≡)</a>
+
+There are times when you need input from the script user, but you don’t want that input to display on the monitor. The classic example of this is when entering passwords, but there are plenty of other types of data that you will need to hide.
+
+The `-s` option prevents the data entered in the read command from being displayed on the monitor (actually, the data is displayed, but the read command sets the text color to the same as the background color). 这个说法值得再确认一下，因为即便颜色一样，但光标的位置不会随着输入而移动，这个是怎么实现的呢？
+
+
+#### Reading from a file <a id="GUI-RFAF">[≡](#≡)</a>
+
+Finally, you can also use the read command to read data stored in a file on the Linux system. Each call to the read command reads a single line of text from the file. When there are no more lines left in the file, the read command will exit with a non-zero exit status.
+
+The tricky part of this is getting the data from the file to the `read` command. The most common method for doing this is to pipe the result of the `cat` command of the file directly to a `while` command that contains the `read` command. Here’s an example of how to do this:  
+```
+#/bin/bash
+
+$ cat data
+setamv
+susie
+angel
+anhong is the son of setamv and susie.
+
+$ cat read.sh 
+#!/bin/bash
+count=1
+cat data | while read line
+do
+   echo "line $count: $line"
+   ((count=count+1))
+done
+
+$ ./read.sh 
+line 1: setamv
+line 2: susie
+line 3: angel
+line 4: anhong is the son of setamv and susie.
+```
+
