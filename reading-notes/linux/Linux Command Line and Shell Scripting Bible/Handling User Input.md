@@ -76,7 +76,7 @@ Notice that the quotation marks aren’t part of the data, they just delineate t
 
   $ cat lotparams.sh 
   #!/bin/bash
-  # handle more than 9 parameters 
+  #handle more than 9 parameters 
   sum=$[$1 + $2 + $3 + $4 + $5 + $6 + $7 + $8 + $9 + $10 + ${11}]
   echo "the sum is $sum, \$10=$10, \$11=${11}"
 
