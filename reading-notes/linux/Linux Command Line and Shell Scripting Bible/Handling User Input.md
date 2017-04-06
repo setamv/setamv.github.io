@@ -95,7 +95,7 @@ When the script assumes there’s data in a parameter variable, and there isn’
 
 $ cat testparams.sh 
 #!/bin/bash
-# test the parameters to be not null
+#test the parameters to be not null
 if [ -z "$1" ]
 then
    echo "the first parameter must not be null."
@@ -121,7 +121,7 @@ The special `$#` variable contains the number of command line parameters include
 
 $ cat countparams.sh 
 #!/bin/bash
-# test the count of the params
+#test the count of the params
 if [ $# -lt 2 ]
 then
    echo "you put $# parameters which is less than 2."
@@ -146,7 +146,7 @@ The `$@` variable on the other hand, takes all of the parameters supplied on the
 
 $ cat iterateparams.sh 
 #!/bin/bash
-# use $* and $@ iterate with the parameters.
+#use $* and $@ iterate with the parameters.
 echo "\$* is: $*"
 echo "\$@ is: $@"
 
@@ -248,7 +248,7 @@ $!/bin/bash
 
 $ cat option.sh 
 #!/bin/bash
-# extracting command line options
+#extracting command line options
 count=1
 while [ -n "$1" ]
 do
@@ -282,7 +282,7 @@ For example:
 
 $ cat option.sh 
 #!/bin/bash
-# extracting command line options
+#extracting command line options
 while [ -n "$1" ]
 do
    case "$1" in
@@ -324,7 +324,7 @@ Your script must be able to detect when your command line option requires an add
 
 $ cat option.sh
 #!/bin/bash
-# extracting command line options and values
+#extracting command line options and values
 while [ -n "$1" ]
 do
    case "$1" in
@@ -516,7 +516,7 @@ standard variable. For example:
 ```
 $ cat read.sh 
 #!/bin/bash
-# basic read
+#basic read
 echo -n "please enter your name: "
 read name
 echo "your name is $name"
@@ -532,7 +532,7 @@ in the `read` command line:
 ```
 $ cat read.sh 
 #!/bin/bash
-# basic read
+#basic read
 read -p "please enter your name: " name
 echo "your name is $name"
 
@@ -545,7 +545,7 @@ You can specify multiple variables. Each data value entered is assigned to the n
 ```
 $ cat read.sh 
 #!/bin/bash
-# basic read
+#basic read
 read -p "Please enter your first name and last name: " firstname lastname
 echo "your first name is '$firstname', last name is '$lastname'"
 

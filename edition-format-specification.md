@@ -8,6 +8,8 @@ This is the specification to markdown edition format applied throughout the whol
 
 ## Content of Specification
 
+- Linux的注释符号与内容之间不能有空格，如"# 注释内容"，因为markdown会将该行信息视为一个一级标题。
+
 - Speical Characters
 
     There are characters which can be used as special representaions:
