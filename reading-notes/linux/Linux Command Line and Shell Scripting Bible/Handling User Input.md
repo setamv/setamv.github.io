@@ -63,26 +63,27 @@ the factorial of 4 is 24
 
 1. Each parameters is separated by a space, so if you want to include a space in the parameter, you must use quotation marks (either single or double quotation marks):     
 
-```
-$ test.sh 'Rich Rum' "Rose Well"
-```
+  ```
+  $ test.sh 'Rich Rum' "Rose Well"
+  ```
 
 Notice that the quotation marks aren’t part of the data, they just delineate the beginning and end of the data.
 
-2. If your script needs more than nine command line parameters, you must use braces around the variable number after the ninth variable, such as ${10}, for example:   
+2. If your script needs more than nine command line parameters, you must use braces around the variable number after the ninth variable, such as ${10}, for example:      
      
-```
-#!/bin/bash
+  ```
+  #!/bin/bash
 
-$ cat lotparams.sh 
-#!/bin/bash
-# handle more than 9 parameters 
-sum=$[$1 + $2 + $3 + $4 + $5 + $6 + $7 + $8 + $9 + $10 + ${11}]
-echo "the sum is $sum, \$10=$10, \$11=${11}"
+  $ cat lotparams.sh 
+  #!/bin/bash
+  # handle more than 9 parameters 
+  sum=$[$1 + $2 + $3 + $4 + $5 + $6 + $7 + $8 + $9 + $10 + ${11}]
+  echo "the sum is $sum, \$10=$10, \$11=${11}"
 
-$ ./lotparams.sh 1 2 3 4 5 6 7 8 9 10 11
-the sum is 66, $10=10, $11=11
-```
+  $ ./lotparams.sh 1 2 3 4 5 6 7 8 9 10 11
+  the sum is 66, $10=10, $11=11
+  ```
+
 经过测试，不使用中括号也可以引用第9个以后的参数。
 
 
