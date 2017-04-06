@@ -61,12 +61,16 @@ the factorial of 4 is 24
 
 **_Notice_**:
 
-1. Each parameters is separated by a space, so if you want to include a space in the parameter, you must use quotation marks (either single or double quotation marks): 
+1. Each parameters is separated by a space, so if you want to include a space in the parameter, you must use quotation marks (either single or double quotation marks):     
+
 ```
 $ test.sh 'Rich Rum' "Rose Well"
 ```
+
 Notice that the quotation marks aren’t part of the data, they just delineate the beginning and end of the data.
-2. If your script needs more than nine command line parameters, you must use braces around the variable number after the ninth variable, such as ${10}, for example:     
+
+2. If your script needs more than nine command line parameters, you must use braces around the variable number after the ninth variable, such as ${10}, for example:   
+     
 ```
 #!/bin/bash
 
@@ -313,7 +317,7 @@ Some options require an additional parameter value. In these situations, the com
 $ ./option.sh -a test1 -b -c -d test2
 ```
 
-Your script must be able to detect when your command line option requires an additional parameter and be able to process it appropriately. Here’s an example of how to do that:  
+Your script must be able to detect when your command line option requires an additional parameter and be able to process it appropriately. Here’s an example of how to do that:     
 ```
 #!/bin/bash
 
@@ -556,6 +560,7 @@ your first name is '"setamv', last name is 'luo" anythingelse'
 Please enter your first name and last name: setamv\ luo anythingelse
 your first name is 'setamv luo', last name is 'anythingelse'
 ```
+
 **_Notice_**    
 
 1. The second variable "lastname" received the value "luo anythingelse". 
