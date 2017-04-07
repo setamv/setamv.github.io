@@ -6,10 +6,10 @@
 - Book: Linux Command Line and Shell Scripting Bible
 - Chapter: Chapter 12: Presenting Data
 - Pages: {, }
-- Reading Time: 06/04/2017 21:15
+- Reading Time: 06/04/2017 21:15 ~ 07/04/2017 20:09
 
 # Content Navigation <a id="≡"></a>
-- [Understanding Input and Output](#CLP)
+- [Understanding Input and Output](#UIAO)
   + [Standard file descriptors](#UIAO-SFD)
     * [STDIN](#UIAO-SFD-STDIN)
     * [STDOUT](#UIAO-SFD-STDOUT)
@@ -28,6 +28,12 @@
   + [Creating a read/write file descriptor](#CYOR-CARWFD)
   + [Closing file descriptors](#CYOR-CFD)
 - [Listing Open File Descriptors](#LOFD)
+- [Suppressing Command Output](#SCO)
+- [Using Temporary Files](#UTF)
+  + [Creating a local temporary file](#UTF-CALTF)
+  + [Creating a temporary file in /tmp](#UTF-CATFIT)
+  + [Creating a temporary directory](#UTF-CATD)
+- [Logging Messages](#LM)
 
 # Reading Notes
 
@@ -441,4 +447,123 @@ redirect. 2878 setamv    6r   REG    8,3        0 106449722 /home/setamv/shellex
 The script creates two alternative file descriptors, one for output (3) and one for input (6). When the script runs the `lsof` command, you can see the new file descriptors in the output. The filename shows the complete pathname for the files used in the file descriptors.
 
 
+## Suppressing Command Output <a id="SCO">[≡](#≡)</a>
+
+There are times when you don’t want to display any output from your script. To solve that problem, you can redirect STDERR to a special file called the _null_ file. The _null_ file is pretty much what it says it is, a file that contains nothing. Any data that the shell outputs to the null file is not saved, thus lost.
+
+The standard location for the null file on Linux systems is _/dev/null_. Any data you redirect to that location is thrown away and doesn’t appear:    
+```
+$ ls -al > /dev/null
+$ cat /dev/null
+```
+
+This is a common way to suppress any error messages without actually saving them:   
+```
+$ ls -al badfile testfile 2> /dev/null
+-rwxr--r-- 1 setamv setamv 135 Oct 29 19:57 testfile
+```
+
+You can also use the _/dev/null_ file for input redirection as an input file. Since the _/dev/null_ file contains nothing, it is often used by programmers to quickly remove data from an existing file without having to remove the file and recreate it:    
+```
+$ cat data
+setamv
+susie
+angel
+anhong is the son of setamv and susie.
+
+$ cat /dev/null > data
+$ cat data
+```
+
+The file "data" still exists on the system, but now it is empty.
+
+
+## Using Temporary Files <a id="UTF">[≡](#≡)</a>
+
+The Linux system contains a special directory location reserved for temporary files. Linux uses the _/tmp_ directory for files that don’t need to be kept indefinitely. Most Linux distributions configure the system to automatically remove any files in the _/tmp_ directory at bootup.
+
+This feature provides an easy way for you to create temporary files that you don’t necessarily have to worry about cleaning up.
+
+The `mktemp` command allows you to easily create a unique temporary file in the _/tmp_ folder. The shell creates the file but doesn’t use your default umask value. Instead, it only assigns read and write permissions to the file’s owner and makes you the owner of the file. Once you create the file, you have full access to read and write to and from it from your script, but no one else will be able to access it (other than the root user of course).
+
+
+### Creating a local temporary file <a id="UTF-CALTF">[≡](#≡)</a>
+
+By default, `mktemp` creates a file in the local directory. To create a temporary file in a local directory with the `mktemp` command, all you need to do is specify a filename template. The template consists of any text filename, plus six X’s appended to the end of the filename:    
+```
+$ mktemp testing.XXXXXX
+$ ls -al testing*
+-rw------- 1 rich rich 0 Oct 29 21:30 testing.UfIi13
+```
+
+The mktemp command replaces the six X’s with a six-character code to ensure the filename is unique in the directory. You can create multiple temporary files and be assured that each one is unique:      
+```
+$ mktemp testing.XXXXXX
+testing.1DRLuV
+$ mktemp testing.XXXXXX
+testing.lVBtkW
+$ mktemp testing.XXXXXX
+testing.PgqNKG
+$ ls -l testing*
+-rw------- 1 rich rich 0 Oct 29 21:57 testing.1DRLuV
+-rw------- 1 rich rich 0 Oct 29 21:57 testing.PgqNKG
+-rw------- 1 rich rich 0 Oct 29 21:30 testing.UfIi13
+-rw------- 1 rich rich 0 Oct 29 21:57 testing.lVBtkW
+```
+
+The output of the `mktemp` command is the name of the file that it creates. When you use the `mktemp` command in a script, you’ll want to save that filename in a variable, so you can refer to it later on in the script:    
+```
+#!/bin/bash
+
+$ cat temp.sh
+#!/bin/bash
+tempfilename=`mktemp test.XXXXXX`
+exec 3> $tempfilename
+echo "This script writes to temp file $tempfile"
+echo "This is the first line" >&3
+echo "This is the second line." >&3
+```
+
+### Creating a temporary file in /tmp <a id="UTF-CATFIT">[≡](#≡)</a>
+
+The `-t` option forces `mktemp` to create the file in the temporary directory of the system. When you use this feature, the `mktemp` command returns the full pathname used to create the temporary file, not just the filename:    
+```
+$ mktemp -t tempfile.XXXXXX
+/tmp/tempfile.UlSP4N
+$ ls /tmp/tempfile*
+/tmp/tempfile.UlSP4N
+```
+
+### Creating a temporary directory <a id="UTF-CATD">[≡](#≡)</a>
+
+The -d option tells the mktemp command to create a temporary directory instead of a file. You can then use that directory for whatever purposes you need, such as creating additional temporary files:    
+```
+$ mktemp -d tmpdir.XXXXXX
+tmpdir.MTqk5i
+$ mktemp -d -t tmpdir.XXXXXX
+/tmp/tmpdir.9dsMxm
+```
+
+
+## Logging Messages <a id="LM">[≡](#≡)</a>
+
+The `tee` command is like a T-connector for pipes. It sends data from STDIN to two destinations at the same time. One destination is STDOUT. The other destination is a filename specified on the `tee` command line:   
+`tee filename`
+
+Since tee redirects data from STDIN, you can use it with the pipe command to redirect output from any command:    
+```
+$ date | tee testfile
+Fri Apr  7 04:58:09 PDT 2017
+$ cat testfile
+Fri Apr  7 04:58:09 PDT 2017
+```
+
+Be careful: by default, the `tee` command overwrites the output file on each use, If you want to append data to the file, you must use the `-a` option:   
+```
+$ date | tee -a testfile
+Fri Apr  7 04:59:57 PDT 2017
+$ cat testfile
+Fri Apr  7 04:58:09 PDT 2017
+Fri Apr  7 04:59:57 PDT 2017
+```
 
