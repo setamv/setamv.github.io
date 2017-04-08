@@ -25,6 +25,12 @@
   + [Viewing jobs](#JC-VJ)
   + [Restarting stopped jobs](#JC-RSJ)
 - [Being Nice](#BN)
+  + [The nice command](#BN-TNC)
+  + [The renice command](#BN-TRC)
+- [Running Like Clockwork](#RLC)
+  + [Scheduling a job using the `at` command](#RLC-SAJUTAC)
+    * [The at command format](#RLC-SAJUTAC-TACF)
+    * [Retrieving job output](#RLC-SAJUTAC-RJO)
 
 # Reading Notes
 
@@ -297,7 +303,7 @@ do
 done
 echo "The end of process."
 
-$ nohup ./background.sh 
+$ nohup ./background.sh &
 nohup: ignoring input and appending output to ‘nohup.out’
 $ cat nohup.out
 The 1 loop, going to sleep 3 seconds.
@@ -385,3 +391,138 @@ To restart a job in foreground mode, use the `fg` command, along with the job nu
 
 ## Being Nice <a id="BN">[≡](#≡)</a>
 
+In a multitasking operating system (which Linux is), the kernel is responsible for assigning CPU time for each process running on the system. Only one process at a time can actually be running in the CPU, so the kernel assigns CPU time to each process in turn.
+
+The scheduling priority is an integer value, from −20 (the highest priority) to +20 (the lowest priority). By default, the bash shell starts all processes with a priority of 0.
+
+This means that a simple script that only requires a little bit of processing time gets the same CPU time slices as a complex mathematical algorithm that can take hours to run.
+
+Sometimes you want to change the priority of a specific command, either lowering its priority so that it doesn’t take as much processing power from the CPU or giving it a higher priority so that it gets more processing time. You can do this by using the `nice` command.
+
+### The nice command <a id="BN-TNC">[≡](#≡)</a>
+
+The `nice` command allows you to set the scheduling priority of a command as you start it. To make a command run with less priority, just use the `-n num` command line option where the num is a positive integer:   
+```
+#!/bin/bash
+
+$ cat nicedemo.sh 
+#!/bin/bash
+sleep 10
+
+$ nice -n 10 ./nicedemo.sh &
+[1] 2304
+
+$ ps al
+F   UID    PID   PPID PRI  NI    VSZ   RSS WCHAN  STAT TTY        TIME COMMAND
+...
+0  1000   2304   2235  30  10 113120  1172 wait   SN   pts/0      0:00 /bin/bash ./nicedemo.sh
+0  1000   2305   2304  30  10 107896   608 hrtime SN   pts/0      0:00 sleep 10
+
+$ ./nicedemo.sh &
+[2] 2324
+
+$ ps al
+F   UID    PID   PPID PRI  NI    VSZ   RSS WCHAN  STAT TTY        TIME COMMAND
+...
+0  1000   2324   2235  20   0 113120  1176 wait   S    pts/0      0:00 /bin/bash ./nicedemo.sh
+0  1000   2325   2324  20   0 107896   608 hrtime S    pts/0      0:00 sleep 10
+```
+The default nice value is 0.
+
+The nice command causes the script to run at a lower priority. However, if you try to increase the priority of one of your commands by a normal system user(not root), you will get an error:   
+```
+$ nice -n -10 ./nicedemo.sh &
+[3] 2330
+[2]   Done                    ./nicedemo.sh
+$ nice: cannot set niceness: Permission denied
+```
+The nice command prevents _normal_ system users from increasing the priority of their commands. This is a safety feature to prevent a user from starting all of his or her commands as high priority.  
+
+
+### The renice command <a id="BN-TRC">[≡](#≡)</a>
+
+Sometimes you’d like to change the priority of a command that’s already running on the system. That’s what the renice command is for. It allows you to specify the PID of a running process to change the priority of:    
+```
+$ renice 10 -p 29504
+```
+
+The renice command has some limitations:    
+
+1. You can only renice processes that you own.
+2. You can only renice your processes to a lower priority.
+3. The root user can renice any process to any priority.
+
+
+## Running Like Clockwork <a id="RLC">[≡](#≡)</a>
+
+The Linux system provides three ways of running a script at a preselected time:   
+
+1. The `at` command
+2. The `batch` command
+3. The `cron` table
+
+Each method uses a different technique for scheduling when and how often to run scripts.
+
+### Scheduling a job using the `at` command <a id="RLC-SAJUTAC">[≡](#≡)</a>
+
+The `at` command allows you to specify a time when the Linux system will run a script. The `at` command submits a job to a queue with directions on when the shell should run the job. Another command, `atd`, runs in the background and checks the job queue for jobs to run. Most Linux distributions start this automatically at boot time.
+
+The `atd` command checks a special directory on the system (usually /var/spool/at) for jobs submitted using the `at` command. By default the `atd` command checks this directory every 60 seconds. When a job is present, the `atd` command checks the time the job is set to be run. If the time matches the current time, the `atd` command runs the job.
+
+#### The at command format <a id="RLC-SAJUTAC-TACF">[≡](#≡)</a>
+
+The basic `at` command format is pretty simple:     
+`at [-f filename] time`
+
+By default, the at command submits input from STDIN to the queue. You can specify a filename used to read commands (your script file) using the -f parameter.
+
+The following example is read command from STDIN:   
+```
+$ at 08:59
+at> echo "hello"
+at> <EOT>
+job 12 at Sat Apr  8 08:59:00 2017
+```
+Where <EOT> is `Ctrl-D` key combination.
+
+
+The time parameter specifies when you want the Linux system to run the job. You can get pretty creative with how you specify the time. The at command recognizes lots of different time formats:    
+
+- A standard hour and minute, such as 10:15
+- An AM/PM indicator, such as 10:15PM
+- A specific named time, such as now, noon, midnight, or teatime (4PM)
+
+If you specify a time that’s already past, the at command runs the job at that time on the next day.
+
+Besides specifying the time to run the job, you can also include a specific date, using a few different date formats:
+
+- A standard date format, such as MMDDYY, MM/DD/YY, or DD.MM.YY
+- A text date, such as Jul 4 or Dec 25, with or without the year
+- You can also specify a time increment:
+    + Now + 25 minutes
+    + 10:15PM tomorrow
+    + 10:15 + 7 days
+
+There are 26 different job queues available for different priority levels. Job queues are referenced using lower-case letters, a through z.    
+By default all at jobs are submitted to job queue a, the highest-priority queue. If you want to run a job at a lower priority, you can specify the letter using the -q parameter.
+
+#### Retrieving job output <a id="RLC-SAJUTAC-RJO">[≡](#≡)</a>
+
+When the job runs on the Linux system, there’s no monitor associated with the job. Instead, the Linux system uses the e-mail address of the user who submitted the job as STDOUT and STDERR. Any output destined to STDOUT or STDERR is mailed to the user via the mail system.
+
+Here’s a simple example of using the at command to schedule a job to run:   
+```
+#!/bin/bash
+
+$ cat atdemo.sh 
+#!/bin/bash
+now=`date +%T`
+echo "This script run at $now"
+echo "This is the end of the script." >&2
+
+$ at -f ./atdemo.sh 8:43
+job 4 at Sat Apr  8 08:43:00 2017
+
+$ mail 
+
+```
