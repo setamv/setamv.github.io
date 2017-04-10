@@ -31,6 +31,13 @@
   + [Scheduling a job using the `at` command](#RLC-SAJUTAC)
     * [The at command format](#RLC-SAJUTAC-TACF)
     * [Retrieving job output](#RLC-SAJUTAC-RJO)
+    * [Listing pending jobs](#RLC-SAJUTAC-LPJ)
+    * [Removing jobs](#RLC-SAJUTAC-RJ)
+  + [Using the batch command](#RLC-UTBC)
+  + [Scheduling regular scripts](#RLC-SRS)
+    * [The cron table](#RLC-SRS-TCT)
+    * [Building the cron table](#RLC-SRS-BTCT)
+    * [The anacron program](#RLC-SRS-BTCT-TAP)
 
 # Reading Notes
 
@@ -526,3 +533,108 @@ job 4 at Sat Apr  8 08:43:00 2017
 $ mail 
 
 ```
+
+在Red Hat上没有收到邮件，但是如果将结果重定向到文件，还是可以看到job是按时执行了。
+
+
+#### Listing pending jobs <a id="RLC-SAJUTAC-LPJ">[≡](#≡)</a>
+
+The `atq` command allows you to view what jobs are pending on the system:   
+```
+$ atq
+15  Mon Apr 10 23:10:00 2017 a setamv
+```
+
+
+#### Removing jobs <a id="RLC-SAJUTAC-RJ">[≡](#≡)</a>
+
+Once you know the information about what jobs are pending in the job queues, you can use the `atrm` command to remove a pending job, the format is:    
+```
+$ atrm jobnum
+```
+The _jobnum_ is the job number.
+
+
+### Using the batch command <a id="RLC-UTBC">[≡](#≡)</a>
+
+The `batch` command is a little different from the `at` command. Instead of scheduling a script to run at a preset time, you use the `batch` command to schedule a script to run when the system is at a lower usage level.
+
+If the Linux system is experiencing high load levels, the batch command will defer running a submitted job until things quiet down. You can schedule a script to run during
+the quiet time without having to know exactly when that is.
+
+The batch command checks the current load average of the Linux system. If the load average is below 0.8, it runs any jobs waiting in the job queue.
+
+The command format for the batch command is:    
+```
+batch [-f filename] [time]
+```
+
+Similarly to the at command, by default the batch command reads commands from STDIN. You
+can use the -f parameter to specify a file to read commands from. You can also optionally specify the earliest time that the batch command should try running the job.
+
+
+### Scheduling regular scripts <a id="RLC-SRS">[≡](#≡)</a>
+
+Using the at command to schedule a script to run at a preset time is great, but what if you need that script to run at the same time every day or once a week or once a month? Instead of having to continually submit at jobs, you can use another feature of the Linux system.
+
+The Linux system uses the `cron` program to allow you to schedule jobs that need to run on a regular basis. The `cron` program runs in the background and checks special tables, called _cron tables_, for jobs that are scheduled to run.
+
+#### The cron table <a id="RLC-SRS-TCT">[≡](#≡)</a>
+
+The _cron table_ uses a special format for allowing you to specify when a job should be run. The format for the cron table is:    
+
+`min hour dayofmonth month dayofweek command`     
+
+The cron table allows you to specify entries as specific values, ranges of values (such as 1–5) or as a wildcard character (the asterisk). 
+
+Examples:
+
+- `15 10 * * * command` 
+    Run a command at 10:15 on every day, the wildcard character used in the _dayofmonth_, _month_, and _dayofweek_ fields indicates that `cron` will execute the command every day of every month at 10:15.
+
+- `15 16 * * 1 command`
+    Run a command at 4:15PM every Monday. You can specify the _dayofweek_ entry as either a three-character text value (mon, tue, wed, thu, fri, sat, sun) or as a numeric value, with 0 being Sunday and 6 being Saturday.
+
+- `00 12 1 * * command`
+    Run a command at 12 noon on the first day of every month. The _dayofmonth_ entry specifies a date value (1–31) for the month.
+
+- How to speicify the last day of every month?
+    A common method is to add an if-then statement that uses the date command to check if tomorrow’s date is 01:      
+    ```
+    00 12 * * * if [ `date +%d -d tomorrow` = 01 ] ; then ; command
+    ```
+    This will check every day at 12 noon to see if it’s the last day of the month, and if so, it will run the command.
+
+The command list must specify the full pathname of the command or shell script to run. You can add any command line parameters or redirection symbols you like, as a regular command line:    
+```
+15 10 * * * /home/rich/test.sh > test4out
+```
+
+The `cron` program runs the script using the user account that submitted the job. Thus, you must have the proper permissions to access the command and output files specified in the command listing.
+
+
+#### Building the cron table <a id="RLC-SRS-BTCT">[≡](#≡)</a>
+
+Each system user can have their own cron table (including the root user) for running scheduled jobs. Linux provides the `crontab` command for handling the cron table. To list an existing cron table, use the -l parameter:    
+```
+$ crontab -l
+no crontab for setamv
+```
+
+By default, each user’s _cron table_ file doesn’t exist. To add entries to your _cron table_, use the `-e` parameter. When you do that, the crontab command automatically starts the vi editor with the existing _cron table_ (or an empty file if it doesn’t yet exist).
+
+##### The anacron program <a id="RLC-SRS-BTCT-TAP">[≡](#≡)</a>
+
+If the Linux system is turned off at the time a job is scheduled to run by `cron`, the job won’t run. The `cron` program doesn’t retroactively run missed jobs when the system is turned back on. To resolve this issue, many Linux distributions also include the `anacron` program.
+
+The `anacron` program uses timestamps to determine if a scheduled job has been run at the
+proper interval. If it determines that a job has missed a scheduled running, it automatically runs the job as soon as possible. This means that if your Linux system is turned off for a few days, when it starts back up any jobs scheduled to run during the time it was off are automatically run.
+
+The anacron program has its own table (usually located at /etc/anacrontab) to specify jobs. On almost all Linux distributions, this table is only accessible by the root user. The format of the anacron table is slightly different from that of the cron table:    
+```
+period delay identifier command
+```
+
+The _period_ entry defines how often the job should be run, specified in days. The _delay_ entry specifies how many minutes after the anacron program determines that a command should be run it should actually run it.
+
+The _identifier_ entry is a unique non-blank character string to uniquely identify the job in log messages and error e-mails.

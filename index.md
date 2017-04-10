@@ -23,3 +23,10 @@ This is the specification to markdown edition format applied throughout the whol
 
 - [reading plans](reading-plans/index.md)       
 　　阅读计划
+
+- [learning timelines](learning-timelines/index.md)
+
+
+## Entries Shortcut
+
+- [Recent Learning Timelines](learning-timelines/2017/Apr.md)
