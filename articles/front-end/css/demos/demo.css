@@ -1,0 +1,21 @@
+.demo-pane {
+	background-color: #FAFAFA;
+	border: solid 1px #E3E3E3;
+	border-radius: 10px;
+	width: 1024px;
+	margin: 25px auto;
+}
+
+.demo-pane .title {
+	text-align: center;
+	font-weight: bold;
+	padding: 10px 0;
+	margin: 10px;
+	background-color: #F5F5F5;
+	border-radius: 12px;
+	border: solid 1px #E3E3E3;
+}
+.demo-pane .demo-con {
+	border-color: #E3E3E3;
+	background-color: #F5F5F5;
+}

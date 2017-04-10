@@ -13,7 +13,7 @@ This is the specification to markdown edition format applied throughout the whol
 - Speical Characters
 
     There are characters which can be used as special representaions:
-    + ≡      Content navigation
+    + ≡      Content navigation, <a id="ContentID">[≡](#≡)</a>
     + 〓     reserved
     + ※     reserved
     + ∮     reserved

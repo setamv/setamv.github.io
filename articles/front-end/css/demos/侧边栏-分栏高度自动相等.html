@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="demo.css">
+    <style type="text/css">
+    	.left {
+			width: 245px;
+			float: left;	
+			border: solid 1px #CCCCCC;
+			border-width: 0 1px 1px 0;
+			background-color: #EFEFEF;		
+    	}
+
+    	.left ul {
+			list-style-type: none;
+			padding: 0;
+			margin: 0;			
+    	}
+
+    	.left ul li {
+    		line-height: 40px;
+    		border: solid 1px #CCCCCC;
+    		border-width: 0 0 1px 0;
+    		padding-left: 30px;   		
+    	}
+
+    	.right {
+			margin-left: 245px;
+			padding: 10px;
+    	}
+
+		#demo2 .demo-con {
+			overflow: hidden;
+		}
+
+		#demo2 .demo-con .left {
+			margin-bottom: -2000px;
+			padding-bottom: 2000px;
+		}
+    </style>
+    <script type="text/javascript">
+    	
+    </script>
+</head>
+<body>
+	<div class="demo-pane" id="demo1">
+		<div class="title">
+			Demo1：侧边栏和分栏高度不一致时，影响美观
+		</div>
+		<div class="demo-con">
+			<div>
+				<div class="left">
+					<ul>
+						<li>菜单一</li>
+						<li>菜单二</li>
+					</ul>
+				</div>
+				<div class="right">
+					<p>这里是右边栏</p>
+					<p>右边栏与左侧的菜单栏高度一样吗？</p>
+					<p>很明显是不一样高的，这样是不是感觉不是很美观呢？</p>
+					<p>如果菜单栏的底色能够一直延伸到容器的底部对齐应该就会很美观了。</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="demo-pane" id="demo2">
+		<div class="title">
+			Demo2：侧边栏和分栏高度一致
+		</div>
+		<div class="demo-con">
+			<div>
+				<div class="left">
+					<ul>
+						<li>菜单一</li>
+						<li>菜单二</li>
+					</ul>
+				</div>
+				<div class="right">
+					<p>这里是右边栏</p>
+					<p>现在侧边栏和分栏的高度是不是一样的呢？</p>
+					<p>真的一样高了，美观多了。怎么做到的呢？</p>
+					<p>给侧边栏加上 margin-bottom:-2000px; padding-bottom:-2000，然后给父容器加上 overflow:hidden就可以啦！</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

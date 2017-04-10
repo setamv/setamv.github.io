@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>负边距的理解</title>
+    <link rel="stylesheet" type="text/css" href="demo.css">
+</head>
+<body>
+
+    <div class="demo-pane" id="demo1">
+        <div class="title">
+            Demo1:&nbsp;负边距对普通文档流的影响
+        </div>
+        <div class="demo-con" style="width:600px; margin:10px auto;">
+            <fieldset style="border:solid 1px #AAAAAA; padding: 20px; ">
+                <legend>父容器</legend>
+                <p>
+                    <strong style="color:red">一、</strong>块元素&lt;p&gt;中的文字
+                </p>
+                <span>
+                    <strong style="color:red">二、</strong>行元素&lt;span&gt;中的文字
+                </span>
+                <span style="display:inline-block;">
+                    <strong style="color:red">三、</strong>inline-block元素中的文字
+                </span>
+            </fieldset>
+
+            <fieldset style="border:solid 1px #AAAAAA; padding: 20px; margin-top:20px">
+                <legend>父容器</legend>
+                <p style="margin:-20px 0 0 -40px">
+                    <strong style="color:red">一、</strong>块元素&lt;p&gt;中的文字
+                </p>
+                <span style="margin:-20px 0 0 -40px">
+                    <strong style="color:red">二、</strong>行元素&lt;span&gt;中的文字
+                </span>
+                <span style="display:inline-block;margin:-20px 0 0 -40px">
+                    <strong style="color:red">三、</strong>inline-block元素中的文字
+                </span>
+            </fieldset>            
+
+            <fieldset style="border:solid 1px #AAAAAA; padding: 20px; margin-top:20px;">
+                <legend>父容器</legend>
+                <p style="margin:-20px 0 0 -40px">
+                    <strong style="color:red">一、</strong>块元素&lt;p&gt;中的文字
+                </p>
+                <span style="margin:-20px -40px -20px -40px">
+                    <strong style="color:red">二、</strong>行元素&lt;span&gt;中的文字
+                </span>
+                <span style="display:inline-block;margin:0">
+                    <strong style="color:red">三、</strong>inline-block元素中的文字
+                </span>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="demo-pane" id="demo2">
+        <div class="title">
+            Demo2:&nbsp;理解负边距的裁减效果 
+        </div>
+        <div class="demo-con" style="width:400px; margin:40px auto;">
+            <fieldset style="border:solid 1px #AAAAAA;">
+                <legend>父容器</legend>
+                <fieldset style="height:100px; border:solid 1px #F3C">
+                    <legend>子元素</legend>
+                </fieldset>
+            </fieldset>
+
+            <fieldset style="border:solid 1px #AAAAAA; margin-top:50px;">
+                <legend>父容器</legend>
+                <fieldset style="height:100px; border:solid 1px #F3C; margin-bottom:-50px">
+                    <legend>子元素</legend>
+                </fieldset>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="demo-pane" id="demo3">
+        <div class="title">
+            Demo3:&nbsp;左和右的负边距对元素宽度的影响 
+        </div>
+        <div class="demo-con" style="width:400px; margin:40px auto;">
+            <fieldset style="border:solid 1px #AAAAAA;">
+                <legend>父容器1</legend>
+                <fieldset style="height:40px; border:solid 1px #999; background-color: #AAA">
+                    <legend>子元素1</legend>
+                </fieldset>
+            </fieldset>
+
+            <fieldset style="border:solid 1px #AAAAAA; margin-top:50px;">
+                <legend>父容器2</legend>
+                <fieldset style="height:40px; border:solid 1px #999; background-color: #AAA;  width:300px; margin-right: -100px;">
+                    <legend>子元素2</legend>
+                </fieldset>
+            </fieldset>
+
+            <fieldset style="border:solid 1px #AAAAAA; margin-top:50px;">
+                <legend>父容器3</legend>
+                <fieldset style="height:40px; border:solid 1px #999; background-color: #AAA; width:auto; margin-right: -100px;">
+                    <legend>子元素3</legend>
+                </fieldset>
+            </fieldset>
+
+            <fieldset style="border:solid 1px #AAAAAA; margin-top:50px;">
+                <legend>父容器4</legend>
+                <fieldset style="height:40px; border:solid 1px #999; background-color: #AAA; margin-right: -100px; margin-left:-100px;">
+                    <legend>子元素4</legend>
+                </fieldset>
+            </fieldset>
+
+            <fieldset style="border:solid 1px #AAAAAA; margin-top:50px;">
+                <legend>父容器5</legend>
+                <span style="background-color:#AAAAAA; margin:0 -40px 0 -40px;">内联元素span</span>
+                <div style="height:10px">&nbsp;</div>
+                <span style="background-color:#AAAAAA; display:inline-block; margin:0 -40px 0 -40px;">inline-block元素5</span>
+                <div style="height:10px">&nbsp;</div>
+                <p style="background-color:#AAAAAA; margin:0 -40px 0 -40px;">块元素</p>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="demo-pane" id="demo4">
+        <div class="title">
+            Demo4:&nbsp;左和右的负边距对元素宽度的影响 
+        </div>
+        <div class="demo-con" style="width:600px; margin:40px auto;">
+            <fieldset style="width:460px; border:solid 3px #999; padding:0; overflow:visible;">
+                <legend>最外层父容器</legend>
+                <fieldset style="margin:20px -22px 20px 0; padding:20px 0; border:solid 1px #999;">
+                    <legend>父容器</legend>
+                    <div style="float:left; width:100px; height:100px; background-color:#CCC; margin-right:20px;"></div>
+                    <div style="float:left; width:100px; height:100px; background-color:#CCC; margin-right:20px;"></div>
+                    <div style="float:left; width:100px; height:100px; background-color:#CCC; margin-right:20px;"></div>
+                    <div style="float:left; width:100px; height:100px; background-color:#CCC; margin-right:20px;"></div>
+                </fieldset>
+            </fieldset>
+            
+        </div>
+    </div>
+
+    <div class="demo-pane" id="demo5">
+        <div class="title">
+            Demo5:&nbsp;利用绝对定位和负边距来居中的方法 
+        </div>
+        <div class="demo-con" style="width:600px; margin:40px auto;">
+            <fieldset style="width:460px; height:200px; border:solid 3px #999; padding:0; position:relative;">
+                <legend>父容器</legend>
+                <fieldset style="width:100px; height:100px; position:absolute; left:50%; top:50%; margin-left:-50px; margin-top:-50px; border:solid 3px #999; background-color:#DDD">
+                    <legend>子元素</legend>
+                </fieldset>
+            </fieldset>            
+        </div>
+    </div>
+
+</body>
+</html>
