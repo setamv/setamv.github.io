@@ -1,4 +1,4 @@
-[Home](../../index.md) >> [Articles](../index.md) >> Linux
+[Home](../../index.md) >> [Articles](../index.md) >> Linux(index.md)
 
 ### Linux Articles Catalogues
 
