@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Bootstrap Overview</title>
+	<link rel="stylesheet" type="text/css" href="../resources/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="demo.css">
+	<style type="text/css">
+		#demo1 {
+			width: auto;
+			margin-left: 20px;
+			margin-right: 20px;
+		}
+		#demo1 .demo-con .col {
+			padding-left:10px; padding-right:0; padding-top:10px;
+		}
+		#demo1 .demo-con .col div {
+			border:solid 1px #CCC
+		}
+	</style>	
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="../resources/html5shiv.js"></script>
+      <script src="../resources/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<div class="demo-pane" id="demo1">
+        <div class="title">
+            Demo1:&nbsp;固定间隔流式布局。
+           	<div class="subtext">
+				利用Bootstrap的格栅布局，对一行中的两列之间设置固定宽度的间隔，并且第一列前面和最后一列后面没有间隔。且支持响应式布局。
+           	</div>
+        </div>
+        <div class="demo-con" style="margin:10px auto;">
+			<div class="container-fluid" style="padding:20px 0">
+				<div class="row" style="margin-left:-10px; margin-right:0;">
+					<div class="col-sm-4 col">
+						<div>.col-sm-4</div>
+					</div>
+					<div class="col-sm-4 col">
+						<div>.col-sm-4</div>
+					</div>
+					<div class="col-sm-4 col">
+						<div>.col-sm-4</div>
+					</div>
+					<div class="col-sm-4 col">
+			            <div>.col-sm-4</div>
+			        </div>
+			        <div class="col-sm-4 col">
+			            <div>.col-sm-4</div>
+			        </div>
+			        <div class="col-sm-4 col">
+			            <div>.col-sm-4</div>
+			        </div>
+				</div>
+			</div>
+        </div>
+    </div>
+
+	<script type="text/javascript" src="../resources/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
+</body>
+</html>
