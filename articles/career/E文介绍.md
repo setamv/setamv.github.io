@@ -1,5 +1,9 @@
-尊敬的各位，早上好，我叫罗巍，来自湖南省株洲市，目前居住在长沙市岳麓区东方红路梅溪鑫苑名家。
-我于2008年毕业于山东建筑大学，毕业之后一直从事J2EE相关的开发工作，我于2014年7月份进入中兴通讯长沙研究所的教育科室，从事教育信息化相关的研发工作，所使用的技术主要有Java、Spring、Mybatis、Html、Css、MySQL
+Good morning! Dear sir.
+It is really my honor to have this opportunity for an interview. My name is luowei and i was born in november 1985, My hometown is Zhuzhou city of Hunan province, and i currently settled in Changsha Yuelu District.
+I graduated from Shandong Jianzhu University in 2008, and i have been engaged in J2EE programming since then and it has been 9 years.
+I entered Changsha institute of ZTE in july 2014 as a Java development engineer, i work in education department, the main techniques i use are Java, Spring, Mybatis, MySQL, Html, Css, JavaScript, Redis.
+I like reading, running, riding bicycle and swimming.
+Thanks.
 
 
 自我介绍，是所有面试中必定会碰到的第一个问题，主要是介绍自己的基本情况、优点缺点、优势特长、职位匹配性，以及对应聘职位的看法等。java面试自我介绍怎么做?下面学习啦小编为大家带来java工程师英文自我介绍，供大家参考!
