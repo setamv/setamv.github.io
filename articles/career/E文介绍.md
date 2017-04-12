@@ -1,9 +1,9 @@
-Good morning! Dear sir.
-It is really my honor to have this opportunity for an interview. My name is luowei and i was born in november 1985, My hometown is Zhuzhou city of Hunan province, and i currently settled in Changsha Yuelu District.
-I graduated from Shandong Jianzhu University in 2008, and i have been engaged in J2EE programming since then and it has been 9 years.
-I entered Changsha institute of ZTE in july 2014 as a Java development engineer, i work in education department, the main techniques i use are Java, Spring, Mybatis, MySQL, Html, Css, JavaScript, Redis.
-I like reading, running, riding bicycle and swimming.
-Thanks.
+Good morning! Dear sir.     
+It is really my honor to have this opportunity for an interview. My name is luowei and i was born in november 1985, My hometown is Zhuzhou city of Hunan province, and i currently settled in Changsha Yuelu District.      
+I graduated from Shandong Jianzhu University in 2008, and i have been engaged in J2EE programming since then and it has been 9 years.       
+I entered Changsha institute of ZTE in july 2014 as a Java development engineer, i work in education department, the main techniques i use are Java, Spring, Mybatis, MySQL, Html, Css, JavaScript, Redis.      
+I like reading, running, riding bicycle and swimming.       
+Thanks.     
 
 
 自我介绍，是所有面试中必定会碰到的第一个问题，主要是介绍自己的基本情况、优点缺点、优势特长、职位匹配性，以及对应聘职位的看法等。java面试自我介绍怎么做?下面学习啦小编为大家带来java工程师英文自我介绍，供大家参考!
