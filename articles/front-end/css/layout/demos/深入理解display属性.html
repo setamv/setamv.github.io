@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>深入理解display属性</title>
+    <link rel="stylesheet" type="text/css" href="demo.css">
+    <style type="text/css">
+        #demo1 .demo-con span, #demo1 .demo-con custom {
+            border:solid 1px #AAA; 
+        }
+        #demo2 .demo-con span {
+            border:solid 1px #AAA; 
+        }
+
+        .region2 span {
+            margin-right: 20px;
+        }
+
+        .region2 .item {
+            border:solid 1px #CCC; padding:0 10px; margin:0 0 15px 0; border-radius:5px
+        }
+    </style>
+</head>
+<body>
+
+    <div class="demo-pane" id="demo1">
+        <div class="title">
+            Demo1:&nbsp;display的默认初始值
+            <div class="subtitle">
+                下面使用自定义的custom标签来看一下默认的初始display属性值是什么？<br/>
+                很明显，custom标签的display属性满足以下几个特征：<br/>
+                1）标签的边界由内容的宽度撑开<br/>
+                2）非独占一行<br/>
+                3）不支持设置宽高<br/>
+                4）代码换行被解析成空格<br/>
+                很明显，这是display:inline的表现特征。
+            </div>
+        </div>
+        <div class="demo-con">
+            <fieldset class="region">
+                <legend>四个特征演示</legend>
+                <custom>custom:宽高边界特征</custom>
+                <custom>custom:非独占一行</custom>
+                <custom style="width:500px; height:400px;">custom:不支持设置宽高</custom>
+                <custom>custom:换行
+                被解析成空格</custom>
+                <br/>
+                <span>span:宽高边界特征</span>
+                <span>span:非独占一行</span>
+                <span style="width:500px; height:400px;">span:不支持设置宽高</span>
+                <span>span:代码换行
+                被解析成空格</span>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="demo-pane" id="demo2">
+        <div class="title">
+            Demo2:&nbsp;display:inline的特征和不支持的样式
+        </div>
+        <div class="demo-con">
+            <fieldset class="region">
+                <legend>演示inline元素的4个特征</legend>
+                <span>宽高边界特征</span>
+                <span>非独占一行</span>
+                <span style="width:500px; height:400px;">不支持设置宽高</span>
+                <span>代码换行
+                被解析成空格</span> 
+            </fieldset>
+
+            <fieldset class="region region2">
+                <legend>line-height和vertical-align的作用</legend>
+                <div class="item">   
+                    <strong>一：</strong>                 
+                    <span>inline元素</span>
+                    <span style="line-height:40px; vertical-align: 1px;"> 
+                       line-height:40px, 无vertical-align
+                    </span>
+                    <span>inline元素</span>
+                </div>
+                <div class="item">   
+                    <strong>二：</strong>                 
+                    <span>inline元素</span>
+                    <span style="vertical-align:top"> 
+                       无line-height, vertical-align:top
+                    </span>
+                    <span>inline元素</span>
+                </div>
+                <div class="item">
+                    <strong>二：</strong>    
+                    <span>inline元素</span>
+                    <span style="line-height:40px; vertical-align:top"> 
+                       line-height:40, vertical-align:top
+                    </span>
+                    <span>inline元素</span>
+                </div>
+                <div class="item">
+                    <strong>三：</strong>    
+                    <span>inline元素</span>
+                    <span style="line-height:40px; vertical-align:middle"> 
+                       line-height:40, vertical-align:middle
+                    </span>
+                    <span>inline元素</span>
+                </div>
+                <div class="item">
+                    <strong>四：</strong>    
+                    <span>inline元素</span>
+                    <span style="line-height:40px; vertical-align:bottom"> 
+                       line-height:40, vertical-align:bottom
+                    </span>
+                    <span>inline元素</span>
+                </div> 
+                <div class="item">   
+                    <strong>五：</strong>                 
+                    <span>inline元素</span>
+                    <span style="line-height:10px; vertical-align:bottom"> 
+                       line-height:10, vertical-align:bottom
+                    </span>
+                    <span>inline元素</span>
+                </div>               
+            </fieldset>
+
+            <fieldset class="region">
+                <legend>margin和padding的作用</legend>
+                <span style="margin:40px;">
+                    margin-top和margin-bottom无效，margin-left和margin-right有效
+                </span>
+                <span>演示左边的margin-right</span>
+                <p></p>
+                <span style="padding:15px 40px; border:solid 3px blue;">
+                    padding会撑开边界，但撑开的边界并不占用文档流的位置
+                </span>
+                <div style="width:800px; height:50px; border:solid 3px #777; margin:0 auto; text-align:center;">
+                    我是一个div
+                </div>
+            </fieldset>
+            
+        </div>
+    </div>
+</body>
+</html>

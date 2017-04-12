@@ -2,7 +2,7 @@
 	background-color: #FAFAFA;
 	border: solid 1px #E3E3E3;
 	border-radius: 10px;
-	width: 1024px;
+	width: 960px;
 	margin: 25px auto;
 }
 
@@ -15,7 +15,24 @@
 	border-radius: 12px;
 	border: solid 1px #E3E3E3;
 }
+
+.demo-pane .title .subtitle {
+	margin: 5px auto;
+	font-weight: normal;
+	line-height: 20px;
+	text-align: left;
+	width: 600px;
+}
+
 .demo-pane .demo-con {
 	border-color: #E3E3E3;
 	background-color: #F5F5F5;
+}
+
+.demo-pane .demo-con .region {
+	border: solid 1px #E3E3E3;
+	background-color: #FFF;
+	border-radius: 10px;
+	margin: 20px 10px;
+	padding: 20px;
 }
