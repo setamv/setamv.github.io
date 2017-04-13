@@ -133,8 +133,32 @@
                 <div style="width:800px; height:50px; border:solid 3px #777; margin:0 auto; text-align:center;">
                     我是一个div
                 </div>
+            </fieldset>            
+        </div>
+    </div>
+
+    <div class="demo-pane" id="demo1">
+        <div class="title">
+            Demo1:&nbsp;display的默认初始值
+            <div class="subtitle">
+                下面使用自定义的custom标签来看一下默认的初始display属性值是什么？<br/>
+                很明显，custom标签的display属性满足以下几个特征：<br/>
+                1）标签的边界由内容的宽度撑开<br/>
+                2）非独占一行<br/>
+                3）不支持设置宽高<br/>
+                4）代码换行被解析成空格<br/>
+                很明显，这是display:inline的表现特征。
+            </div>
+        </div>
+        <div class="demo-con">
+            <fieldset class="region">
+                <legend>四个特征演示</legend>
+                <span style="border:solid 1px #AAA;">
+                    <div style="width: 100px; height:100px; border:solid 2px blue;">
+                        
+                    </div>
+                </span>
             </fieldset>
-            
         </div>
     </div>
 </body>

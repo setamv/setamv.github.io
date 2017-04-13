@@ -3,8 +3,8 @@
 # Date And Time In Linux System
 
 # Introduct
-
-Record commands and ways to look at or change system date, system time or system timezone.
+  
+  Record commands and ways to look at or change system date, system time or system timezone.
 
 # Contents Catalogue
 
