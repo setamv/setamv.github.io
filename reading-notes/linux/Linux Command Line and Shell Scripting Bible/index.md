@@ -25,3 +25,5 @@
 - [Presenting Data](Presenting Data.md)
 
 - [Script Control](Script Control.md)
+
+- [Creating Functions](Creating Functions.md)

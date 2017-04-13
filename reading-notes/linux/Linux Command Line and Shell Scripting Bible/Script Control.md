@@ -38,6 +38,12 @@
     * [The cron table](#RLC-SRS-TCT)
     * [Building the cron table](#RLC-SRS-BTCT)
     * [The anacron program](#RLC-SRS-BTCT-TAP)
+- [Start At the Beginning](#SATB)
+  + [Start At the Beginning](#SATB)
+  + [Starting your scripts at boot](#SATB-SYSAB)
+    * [The boot process](#SATB-SYSAB-TBP)
+    * [Defining your scripts](#SATB-SYSAB-DYS)
+  + [Starting with a new shell](#SATB-SWNS)
 
 # Reading Notes
 
@@ -638,3 +644,71 @@ period delay identifier command
 The _period_ entry defines how often the job should be run, specified in days. The _delay_ entry specifies how many minutes after the anacron program determines that a command should be run it should actually run it.
 
 The _identifier_ entry is a unique non-blank character string to uniquely identify the job in log messages and error e-mails.
+
+
+
+## Start At the Beginning <a id="SATB">[≡](#≡)</a>
+
+The last method of starting shell scripts is to have your script run automatically either as soon as the Linux system boots or whenever a user starts a new bash shell session.
+
+### Starting your scripts at boot <a id="SATB-SYSAB">[≡](#≡)</a>
+
+#### The boot process <a id="SATB-SYSAB-TBP">[≡](#≡)</a>
+
+The boot process after you turn on the linux system is:  
+
+1. the Linux kernel loads into memory and runs
+2. the Linux kernel run the `init` program
+    The `init` program usually located at /sbin/init, Since the init program is always the first thing to run, the kernel always assigns it PID 1
+3. The `init` program reads the /etc/inittab file as part of the boot process
+    The inittab file lists scripts that the `init` program starts at different run levels, A Linux run level defines the operating state of the Linux system, the table bellow shows the avalible levels:   
+
+    | **Run level** |                          **Description**                          |
+    |---------------|-------------------------------------------------------------------|
+    |             0 | Halt                                                              |
+    |             1 | Single-user mode                                                  |
+    |             2 | Multi-user mode, usually without networking support               |
+    |             3 | Full multi-user mode, with networking                             |
+    |             4 | Unused                                                            |
+    |             5 | Multi-user mode, with networking and a graphical X Window session |
+    |             6 | Reboot                                                            |
+
+    The Linux system determines what programs to start at what run level by the `rc` script. The `rc` script determines the current system run level and runs the appropriate scripts for that run level.
+
+    The Linux system starts applications using startup scripts. A startup script is a shell script that starts an application, providing the necessary environment variables for it to run.
+
+4. Execute startup scripts
+    Some distributions place startup scripts in the /etc/rc.d directory, with a different directory for each run level. Others use the /etc/init.d directory, and still others use the /etc/init.d/rc.d directory
+    
+
+#### Defining your scripts <a id="SATB-SYSAB-DYS">[≡](#≡)</a>
+
+Most Linux distributions provide a local startup file specifically to allow the system
+administrator to enter scripts to run at boot time, the table bellow list three popular Linux distributions' location of the startup file:  
+
+| **Distribution** |   **File Location**    |
+|------------------|------------------------|
+| Debian           | /etc/init.d/rc.local   |
+| Fedora           | /etc/rc.d/rc.local     |
+| openSuse         | /etc/init.d/boot.local |
+
+Inside the local startup file, you can either specify specific commands and statements, or enter any scripts you want started at boot time. Remember, if you use a script, you’ll need to specify the full pathname for the script so that the system can find it at boot time.
+
+
+### Starting with a new shell <a id="SATB-SWNS">[≡](#≡)</a>
+
+There are multiple start scripts while starts a new bash shell or login:   
+
+1. The ~/.bash_profile file
+    The bash shell runs the ~/.bash_profile file when a new shell is run as a result of a new login. Place any scripts that you want run at login time in this file.
+
+2. The ~/.bashrc file
+    The bash shell runs the .bashrc file any time a new shell is started, including when a new login occurs. You can test this by adding a simple echo statement to the .bashrc file in your home directory, then starting a new shell:
+    ```
+    $ bash
+    This is a new shell!!
+    ```
+
+3. The /etc/bashrc file
+    If you want to run a script for every user on the system, most Linux distributions provide the /etc/bashrc file. The bash shell executes the statements in this file every time any user on the system starts a new bash shell.
+
