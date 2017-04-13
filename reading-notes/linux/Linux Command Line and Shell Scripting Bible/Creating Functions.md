@@ -7,7 +7,16 @@
 
 # Content Catalogue <a id="≡"></a>
 
-- []
+- [Basic Script Functions](#BSF)
+    + [Creating a function](#BSF-CF)
+    + [Using functions](#BSF-UF)
+    + [Returning a Value](#BSF-RV)
+    + [Using function output](#BSF-UFO)
+- [Using Variables in Functions](#UVIF)
+    + [Passing parameters to a function](#UVIF-PP)
+    + [Handling variables in a function](#UVIF-HV)
+        * [Global variables](#UVIF-HV-GV)
+        * [Local variables](#UVIF-HV-LV)
 
 # Content
 
