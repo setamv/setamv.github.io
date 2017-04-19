@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap Overview</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="demo.css">
+    <style type="text/css">
+        body>div {
+            background-color: #F5F5F5;
+            padding: 10px 0;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 260px;
+            float: left; 
+            margin-bottom: -3000px;
+            padding-bottom: 3000px;  
+            background-color: #E8EAF1;         
+        }
+
+        .sidebar ul {
+            list-style-type: none;   
+            border: solid 1px #D6D7DC;
+            border-bottom-width: 0;   
+            padding: 0;      
+        }
+
+        .sidebar ul li {
+            height: 90px;
+            line-height: 90px;
+            text-align: center;
+            color: #656D96;
+            border-bottom: solid 1px #D6D7DC;
+        }
+
+        .content {
+            padding: 0;
+            margin-left: 270px;
+            margin-right: 10px;
+            overflow-x: auto;
+        }
+
+        .content-pane {
+            min-width: 1000px;                
+        }
+
+        .block {
+            border: solid 1px #AAA;
+            height: 300px;
+        }
+
+        .fixedwidth-block {
+            width: 300px;
+        }
+
+        .col-pad {
+            padding: 0 0 0 10px;            
+        }
+
+        .col-clearpad {
+            padding: 0;
+        }
+
+        .container-fluid {
+            padding:0; margin:0;
+        }
+
+        .container-fluid .row {
+            margin:0;
+        }
+    </style>    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="../resources/html5shiv.js"></script>
+      <script src="../resources/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div>
+    <div class="sidebar">
+        <ul>
+            <li>总体GDP分析</li>
+            <li>产业GDP分析</li>
+            <li>行业GDP分析</li>
+            <li>地域GDP分析</li>            
+        </ul>
+    </div>
+    <div class="content">
+        <div class="content-pane">
+            <!-- 第1列固定宽度；第2、3列自适应宽度 -->
+            <div class="block fixedwidth-block" style="float:left;">
+                我的宽度固定不变
+            </div>
+            <div class="container-fluid" style="margin-left:310px; ">
+                <div class="row" style="margin-left:-10px; margin-right:0;">
+                    <div class="col-xs-6 col-pad">
+                        <div class="block">
+                            我的宽度自适应
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-pad">
+                        <div class="block">
+                            我的宽度自适应
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p></p>
+
+            <!-- 第2列固定宽度且居中；第1、3列自适应宽度 -->
+            <div class="container-fluid">
+                <div class="row" style="position:relative;">
+                    <div class="col-xs-6 col-clearpad">
+                        <div class="block" style="margin-right: 160px">
+                            我的宽度自适应
+                        </div>
+                        <div class="block fixedwidth-block" style="position:absolute; top:0; right:-150px;">
+                            我的宽度固定不变
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-clearpad">
+                        <div class="block" style="margin-left:160px">
+                            我的宽度自适应
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p></p>
+
+            <!-- 第1、2列自适应宽度，第3列固定宽度 -->
+            <div class="container-fluid" style="position:relative;">                
+                <div class="row" style="margin-right: 310px; margin-left:-10px;">
+                    <div class="col-xs-6 col-pad">
+                        <div class="block">
+                            我的宽度自适应
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-pad">
+                        <div class="block">
+                            我的宽度自适应
+                        </div>
+                    </div>
+                </div>
+                <div class="block fixedwidth-block" style="position:absolute; right:0; top:0;">
+                    我的宽度固定不变
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="../resources/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
+</body>
+</html>

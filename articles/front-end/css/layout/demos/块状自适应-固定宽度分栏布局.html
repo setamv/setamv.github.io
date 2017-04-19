@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>块状自适应-固定宽度分栏布局</title>
+    <link rel="stylesheet" type="text/css" href="demo.css">
+    <style type="text/css">
+        body>div {
+            background-color: #F5F5F5;
+            padding: 10px 0;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 260px;
+            float: left; 
+            margin-bottom: -3000px;
+            padding-bottom: 3000px;  
+            background-color: #E8EAF1;         
+        }
+
+        .sidebar ul {
+            list-style-type: none;   
+            border: solid 1px #D6D7DC;
+            border-bottom-width: 0;   
+            padding: 0;      
+            margin:0;
+        }
+
+        .sidebar ul li {
+            height: 90px;
+            line-height: 90px;
+            text-align: center;
+            color: #656D96;
+            border-bottom: solid 1px #D6D7DC;
+        }
+
+        .content {
+            padding: 0;
+            margin-left: 270px;
+            margin-right: 10px;
+            overflow-x: auto;
+        }
+
+        .content-pane {
+            min-width: 744px;                
+        }
+
+        .col-xs-6 {
+            float: left;
+            display: block;
+            width: 50%;
+            position:relative;
+        }
+
+        .col-margin {
+            margin: 0 0 0 10px;            
+        }
+
+        .col-clearpad {
+            padding: 0;
+        }
+
+        .block {
+            border: solid 1px #AAA;
+            height: 300px;
+        }
+
+        .fixedwidth-block {
+            width: 300px;
+        }
+
+        .container-fluid {
+            padding:0; margin:0;
+        }
+
+        .container-fluid .row {
+            margin:0;
+        }
+
+        .container-fluid .row:after {
+            display: block;
+            content: " ";
+            clear: both;
+        }
+    </style>  
+</head>
+<body>
+<div>
+    演示一行排列3栏，并且其中有一栏宽度固定，其他两栏的宽度随整个视口的宽度自适应。当视口宽度小于1024px时，出现横向滚动条，可以滚动展示3个栏目。
+</div>
+<div>
+    <div class="sidebar">
+        <ul>
+            <li>总体GDP分析</li>
+            <li>产业GDP分析</li>
+            <li>行业GDP分析</li>
+            <li>地域GDP分析</li>                  
+        </ul>
+    </div>
+    <div class="content">
+        <div class="content-pane">
+            <!-- 第1列固定宽度；第2、3列自适应宽度 -->
+            <div class="block fixedwidth-block" style="float:left;">
+                我的宽度固定不变
+            </div>
+            <div class="container-fluid" style="margin-left:310px; ">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="block">
+                            我的宽度自适应
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="block col-margin">
+                            我的宽度自适应
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p></p>
+
+            <!-- 第2列固定宽度且居中；第1、3列自适应宽度 -->
+            <div class="container-fluid">
+                <div class="row" style="position:relative;">
+                    <div class="col-xs-6">
+                        <div class="block" style="margin-right: 160px">
+                            我的宽度自适应
+                        </div>
+                        <div class="block fixedwidth-block" style="position:absolute; top:0; right:-150px;">
+                            我的宽度固定不变
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="block" style="margin-left:160px">
+                            我的宽度自适应
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p></p>
+
+            <!-- 第1、2列自适应宽度，第3列固定宽度 -->
+            <div class="container-fluid" style="position:relative;">                
+                <div class="row" style="margin-right: 312px;">
+                    <div class="col-xs-6">
+                        <div class="block">
+                            我的宽度自适应
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="block col-margin">
+                            我的宽度自适应
+                        </div>
+                    </div>
+                </div>
+                <div class="block fixedwidth-block" style="position:absolute; right:0; top:0;">
+                    我的宽度固定不变
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
