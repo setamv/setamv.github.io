@@ -303,3 +303,183 @@ temp is smaller
 $
 ```
 
+
+## Array Variables and Functions <a id="AVAF">[≡](#≡)</a>
+
+### Passing arrays to functions <a id="AVAF-PATF">[≡](#≡)</a>
+
+If you try using the array variable as a function parameter, the function only picks up the first value of the array variable. for example:     
+```
+#!/bin/bash
+
+$ cat arrparams.sh 
+#!/bin/bash
+function testit {
+  echo "The parameters are: $@"
+  thisarray=$1
+  echo "The received array is: ${thisarray[*]}"
+}
+
+myarray=(1 2 3 4 5)
+echo "The original array is ${myarray[*]}"
+testit $myarray
+
+$ ./arrparams.sh 
+The original array is 1 2 3 4 5
+The parameters are: 1
+The received array is: 1
+```
+
+To solve this problem, you must disassemble the array variable into its individual values, then use the values as function parameters. Inside the function, you can reassemble all of the parameters into a new array variable. For example:   
+```
+#!/bin/bash
+
+$ cat arrparams.sh 
+#!/bin/bash
+function testit {
+  echo "The parameters are: $@"
+  thisarray=(`echo $@`)
+  echo "The received array is: ${thisarray[*]}"
+}
+
+myarray=(1 2 3 4 5)
+echo "The original array is ${myarray[*]}"
+testit ${myarray[*]}
+
+$ ./arrparams.sh 
+The original array is 1 2 3 4 5
+The parameters are: 1 2 3 4 5
+The received array is: 1 2 3 4 5
+```
+
+In the example above, it's disassemble the array variable by `${myarray[*]}` and reassemble the array by ```(`echo $@`)```
+
+
+### Returning arrays from functions <a id="AVAF-RAFF">[≡](#≡)</a>
+
+You can use `echo` statement in functions to output the individual array values in the proper order, then the script must reassemble them into a new array variable, for example:     
+```
+#!/bin/bash
+
+$ cat arrparams.sh 
+#!/bin/bash
+function testit {
+  local thisarray=(1 2 3 4)
+  echo ${thisarray[*]}
+}
+myarray=(`testit`)
+echo "myarray is: ${myarray[*]}"
+
+$ ./arrparams.sh 
+myarray is: 1 2 3 4
+```
+
+
+## Function Recursion <a id="FR">[≡](#≡)</a>
+
+One feature that local function variables provides is _self-containment_. A _self-contained_ function doesn’t use any resources outside of the function, other than whatever variables the script passes to it in the command line.
+
+This feature enables the function to be called recursively. The classic example of a recursive algorithm is calculating factorials, A factorial of a number is the value of the preceding numbers multiplied with the number.    
+5! = 1 * 2 * 3 * 4 * 5     
+n! = (n-1)! * n        
+```
+#!/bin/bash
+
+$ cat arrparams.sh 
+#!/bin/bash
+function calfactorial {
+  if [ $1 -eq 1 ]; then
+    echo 1
+  else
+    local temp=$[ $1 - 1 ]
+    local result=`calfactorial $temp`
+    echo $[ $result * $1]
+  fi
+}
+
+read -p "Please enter the value: " value
+result=`calfactorial $value`
+echo "The factorial of $value is: $result"
+
+$ ./arrparams.sh 
+Please enter the value: 5
+The factorial of 5 is: 120
+```
+
+
+## Creating a Library <a id="CAL">[≡](#≡)</a>
+
+It’s easy to see how functions can help save typing in a single script, but how about if you just happen to use the same single code block between scripts?   
+
+There’s a solution for that problem! The bash shell allows you to create a library file for your functions, then reference that single library file in as many scripts as you need to.   
+
+The first step in the process is to create a common library file that contains the functions you need in your scripts. Here’s a simple library file called myfuncs that defines three simple functions:    
+```
+#!/bin/bash
+
+$ cat myfuncs
+#my script functions
+function addem {
+  echo $[ $1 + $2 ]
+}
+
+function mulem {
+  echo $[ $1 * $2 ]
+}
+
+function divem {
+  if [ $2 -ne 0 ]; then
+    echo $[ $1 / $2 ]
+  else
+    echo -1
+  fi
+}
+```
+
+**_Notice_**: The library file need not to be executable.
+
+
+The next step is to include the myfuncs library file in your script files that want to use any of the functions.
+
+Just as with environment variables, shell functions are only valid for the shell session in which you define them. If you run the myfuncs shell script from your shell command line interface prompt, the shell creates a new shell, and runs the script in that new shell. This will define the three functions for that shell, but when you try to run  another script that uses those functions, they won’t be available, for example:     
+```
+#!/bin/bash
+
+$ cat usefuncs
+#!/bin/bash
+./myfuncs
+result=`addem 10 15`
+echo "The result is $result"
+$ ./usefuncs
+./usefuncs: addem: command not found
+The result is
+```
+
+The key to using function libraries is the source command. The source command executes
+commands within the current shell context instead of creating a new shell to execute them. You use the source command to run the library file script inside of your shell script. This makes the functions available to the script. 
+
+The source command has a shortcut alias, called the dot operator. To source the myfuncs library file in a shell script, all you need to do is add the following line:
+```
+. ./myfuncs
+```
+
+The whole example is:            
+```
+$ cat usefuncs 
+#!/bin/bash
+. ./myfuncs
+
+val1=5
+val2=10
+val3=0
+echo "addem $val1 $val2 = `addem $val1 $val2`"
+echo "mulem $val1 $val2 = `mulem $val1 $val2`"
+echo "divem $val2 $val1 = `divem $val2 $val1`"
+echo "divem $val2 $val3 = `divem $val2 $val3`"
+
+$ ./usefuncs 
+addem 5 10 = 15
+mulem 5 10 = 50
+divem 10 5 = 2
+divem 10 0 = -1
+```
