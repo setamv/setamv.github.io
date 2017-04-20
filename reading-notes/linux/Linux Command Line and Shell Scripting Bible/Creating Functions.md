@@ -17,6 +17,11 @@
     + [Handling variables in a function](#UVIF-HV)
         * [Global variables](#UVIF-HV-GV)
         * [Local variables](#UVIF-HV-LV)
+- [Array Variables and Functions](#AVAF)
+    + [Passing arrays to functions](#AVAF-PATF)
+    + [Returning arrays from functions](#AVAF-RAFF)
+- [Function Recursion](#FR)
+- [Creating a Library](#CAL)
 
 # Content
 
