@@ -235,6 +235,7 @@ $ ./test
 '' is empty
 ```
 **_Why_** ?
+这里对变量的引用有误，应该这样写：`if test -n "$var1"; then`，因为`-n`是对字符串进行比较的，所以变量`$var1`需要使用双引号引起来。
 
 ##### String equality
 
@@ -462,7 +463,7 @@ Example:
     
     When execute the script `a=$((a+1, b++, c--))`, the result of last expression `c--` will be returned and set to variable a, and be careful, the `c--` will return the value of c before decrement.
 
-+ Use double parentheses in `if-the`
++ Use double parentheses in `if-then`
 
     ```
     #!/bin/bash
