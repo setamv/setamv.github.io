@@ -17,7 +17,11 @@ Java虚拟机的常用参数信息记录
     设置该参数后，JVM启动后将打印所有-XX类型的参数，每个参数占一行，每一行的格式相同，包括5列，如下所示：      
     `bool PrintFlagsFinal      := true            {product}`
     其中：
-    * 第1列 参数值的类型。包括：bool、uintx、intx、double、ccstrlist、ccstr、uint64_t     
+    * 第1列 参数值的类型。包括：bool、uintx、intx、double、ccstrlist、ccstr、uint64_t
+    * 第2列 参数名称
+    * 第3列 表达式运算符。包括：`=`、`:=`，其中`=`表示第四列是参数的默认值；`:=`表示第四列被用户或者JVM赋值了（即不是默认值）
+    * 第4列 参数的值。该值必须符合第1列中值类型。
+    * 第5列 参数的类别     
 
 ## -Xmn <a id="jp-xmn">[≡](#≡)</a>
 - 参数说明
