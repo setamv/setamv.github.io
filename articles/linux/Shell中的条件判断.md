@@ -129,8 +129,8 @@ $ $[ EXPRESSION ]
 | ARG1 % ARG2         | remainder of ARG1 divided by ARG2                          |
 
 **_注意_**:    
-1. 表达式 _EXPRESSION_与`$[]`之间 以及 表达式 _EXPRESSION_中的操作数和运算符之间可以有空格，也可以没有。如：`$[1+2]`和`$[ 1 + 2 ]`的输出结果是一样的。这点和`expr`表达式不一样。
-2. _EXPRESSION_中的所有运算符都不需要转义，这点和`expr`表达式不一样。
+1. 表达式 _EXPRESSION_ 与`$[]`之间 以及 表达式 _EXPRESSION_ 中的操作数和运算符之间可以有空格，也可以没有。如：`$[1+2]`和`$[ 1 + 2 ]`的输出结果是一样的。这点和`expr`表达式不一样。
+2. _EXPRESSION_ 中的所有运算符都不需要转义，这点和`expr`表达式不一样。
 3. EXPRESSION中的参数只能是整数，不能是浮点数或字符串。
 
 

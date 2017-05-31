@@ -10,7 +10,12 @@ Java虚拟机的常用参数信息记录
 
 # HotSpot JVM Parameters <a id="jp">[≡](#≡)</a>
 
-## -XX:+PrintFlagsInitial
+  |     **Parameter**      | **Initial Value**    |            **Keywords**             |
+  | ---------------------- | --- | ----------------------------------- |
+  | -XX:+PrintFlagsInitial |     | 打印JVM参数、JVM参数初始值、JVM参数 |
+  |                        |     |                                     |
+
+## -XX:+PrintFlagsFinal <a id="pff">[≡](#≡)</a>
 - 参数说明
     打印JVM的所有-XX参数的最终值（当参数未被指定为特定值，则最终值为参数的初始值；否则为指定的值）。
 - 参数输出结果
@@ -23,6 +28,12 @@ Java虚拟机的常用参数信息记录
     * 第4列 参数的值。该值必须符合第1列中值类型。
     * 第5列 参数的类别     
 
+## -XX:+PrintFlagsInitial
+- 参数说明
+    打印JVM的所有-XX参数的初始值。
+- 参数输出结果
+    请参考[-XX:+PrintFlagsFinal](#pff)
+
 ## -Xmn <a id="jp-xmn">[≡](#≡)</a>
 - 参数说明
     指定JVM堆中新生代的大小
@@ -32,7 +43,7 @@ Java虚拟机的常用参数信息记录
     指定新生代中Eden区与Survivor区的容量比值。
 - 取值
     `-XX:SurvivorRatio=N`，'N'为一个大于0的整数。表示Eden区与Survivor区的容量比值为:N:1。  
-    默认值为8，表示 Eden:Survivor=8:1
+    默认值为8，表示 Eden:Survivor=8:1，存在两个Survivor区（一个From，一个To）。如果新生代大小为10M，则Eden区大小为8M，两个Survivor区大小都为1M。
     
 ## -Xmx 和 -Xms <a id="jp-xmx">[≡](#≡)</a>
 - 参数说明
@@ -51,8 +62,11 @@ Java虚拟机的常用参数信息记录
     
 ## -XX:MaxTenuringThreshold
 - 参数说明
-    晋升到老年代的年龄。每个对象在坚持过一次Minor GC而不被GC回收时，其年龄就增加1，当对象在某次GC的过程中年龄超过该参数值时，就晋升到老年代。
+    晋升到老年代的年龄。
+    虚拟机给每个对象定义了一个对象年龄（Age）计数器。如果对象在Eden出生并经过第一次Minor GC后仍然存活，并且能被Survivor容纳的话，将被移动到Survivor空间中，并且对象年龄设为1。对象在Survivor区中每“熬过”一次Minor GC，年龄就增加1岁，当它的年龄达到MaxTenuringThreshold设定的值时，就将会被晋升到老年代中。
 - 取值
+    `-XX:MaxTenuringThreshold=1` 表示对象晋升到老年代的年龄为1.即只要对象经历过1次Minor GC后任然存活并且能被Survivor所容纳，该对象就会晋升到老年代.
+    默认值为15.
 
 ## -XX:+UseSerialGC 
 - 参数说明
@@ -75,6 +89,10 @@ Java虚拟机的常用参数信息记录
 ## -XX:+UseParallelOldGC
 - 参数说明
     指定使用Parallel Scavenge(新生代) + Parallel Old（老年代）的收集器组合。
+
+## -XX:+UseG1GC
+- 参数说明
+    指定使用G1收集器。
 
 ## -XX:ParallelGCThreads
 - 参数说明
@@ -133,9 +151,29 @@ Java虚拟机的常用参数信息记录
 - 适用的收集器    
     CMS
 
+## -XX:+PrintGC
+- 参数说明
+    开启输出GC日志的功能。
+
 ## -XX:+PrintGCDetails
 - 参数说明
-    用于开启Java虚拟机的GC日志打印功能。加入该参数后，Java虚拟机将记录并打印垃圾收集器（GC）的垃圾收集操作日志。
+    虚拟机在发生垃圾收集行为时打印内存回收日志，并且在进程退出的时候输出当前的内存各区域分配情况
+
+## -XX:+PrintGCTimeStamps
+- 参数说明
+    输出GC的时间戳（以基准时间的形式）
+    
+## -XX:+PrintGCDateStamps
+- 参数说明
+    输出GC的时间戳（以日期的形式，如 2013-05-04T21:53:59.234+0800）
+    
+## -XX:+PrintHeapAtGC
+- 参数说明
+    在进行GC的前后打印出堆的信息
+    
+## -Xloggc:../logs/gc.log  
+- 参数说明
+    指定GC日志输出到日志文件，并指定日志文件的输出路径。该路径是相对当前Main类所在根目录的相对路径。
 
 ## -verbose:gc
 - 参数说明
@@ -175,6 +213,22 @@ Java虚拟机的常用参数信息记录
 - 参数说明
     开启虚拟机遇到OutOfMemoryError时将堆信息Dump。
     
+## -XX:+HeapDumpPath 
+- 参数说明
+    设置虚拟机导出堆Dump文件时文件保存的路径。可以和'HeapDumpBeforeFullGC'、'HeapDumpAfterFullGC'配合使用。
+    
+## -XX:+HeapDumpBeforeFullGC   
+- 参数说明
+    开启虚拟机Full GC前导出堆Dump文件
+
+## -XX:+HeapDumpAfterFullGC   
+- 参数说明
+    开启虚拟机Full GC后导出堆Dump文件   
+    
+## -XX:+HeapDumpOnCtrlBreak
+- 参数说明
+    开启虚拟机遇到Ctrl+Break组合键时，生成堆Dump文件。
+    
 ## -Xnoclassgc
 - 参数说明
     设置GC是否对方法区中已加载的类进行回收
@@ -194,6 +248,15 @@ Java虚拟机的常用参数信息记录
 ## -XX:+HandlePromotionFailure
 - 参数说明
     是否允许分配担保失败，即老年代的剩余空间不足以应付新生代的整个Eden和Survivor区的所有对象都存活的极端情况。
-
     
+## -Dcom.sun.management.jmxremote
+- 参数说明
+    开启JMX管理功能。JDK1.5（包括1.5）之前默认是未开启的，JDK1.6之后默认都是开启的。
+
+## -Xshare
+- 参数说明
+    开启或关闭类共享优化功能，类共享是一个在多虚拟机进程中共享rt.jar中类数据以提高加载速度和节省内存的优化。
+    注意：根据相关Bug报告的反映，VisualVM的Profiler功能可能会因为类共享而导致被监视的应用程序崩溃，所以读者进行Profiling前，最好在被监视程序中使用-Xshare：off参数来关闭类共享优化
+- 取值
+    `-Xshare:off` 关闭类共享功能；`-Xshare:on` 开启类共享功能。JDK1.5以后，在Client模式下默认为开启。
 
