@@ -5,8 +5,10 @@
 
 # 导航
 
-- [Java Virtual Machine Articles](jvm/index.md)
-    Java虚拟机相关的文章。
+- [Java](java/index.md)
+    Java相关内容
+
+- [Linux](linux/index.md)
     
 
 
