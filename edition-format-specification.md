@@ -1,55 +1,12 @@
 [Home](index.md)
 
-# Markdown Edition Format Specification 
+# Markdown文档编辑规范
 
-## Introduction
+## 规范
 
-This is the specification to markdown edition format applied throughout the whole konwledge base project. You should comply with the markdown edition format specification.
+- 特殊字符
+    下面一些字符作为特殊的标记符号：
+    + ≡     用于目录列表中标识跳转链接, 例如：<a id="ContentID">[≡](#≡)</a>
+    + ∮     保留
 
-## Content of Specification
-
-- Linux的注释符号与内容之间不能有空格，如"# 注释内容"，因为markdown会将该行信息视为一个一级标题。
-
-- Speical Characters
-
-    There are characters which can be used as special representaions:
-    + ≡      Content navigation, <a id="ContentID">[≡](#≡)</a>
-    + 〓     reserved
-    + ※     reserved
-    + ∮     reserved
-    + 〒     reserved
-    + 卍     reserved
-    + ‖      reserved
-
-
-fdsfdsffdsfdsf
-
-★☆★$ & ¤ § | °゜ ¨ ± · × ÷ ˇ ˉ ˊ ˋ ˙ Γ Δ Θ Ξ Π Σ Υ Φ Ψ Ω α β γ δ ε ζ η θ ι κ λ μ ν ξ π ρ σ τ υ φ ψ ω Ё Б Г Д Е Ж З И
-Й К Л Ф У Ц Ч Ш Щ Ъ Ы Э Ю Я а б в г д ж з и й к л ф ц ч ш щ ъ ы ю я ёABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz - ― ‖ ‥ … ‰ ′ ″ ※ ℃ ℅ ℉ № ℡
-ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫⅬⅭⅮⅯⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅺⅻⅼⅽⅾⅿↁↂↇↈↀↃↅↆ← ↑ → ↓ ↔↕↖ ↗ ↘ ↙⇔↹
-∈ ∏ ∑ ∕ √ ∝ ∞ ∟ ∠ ∣ ∥ ∧ ∨ ∩ ∪ ∫ ∮ ∴ ∵ ∶ ∷ ∽ ≈ ≌ ≒ ≠ ≡ ≤ ≥ ≦ ≧ ≮ ≯ ⊕ ⊙ ⊥ ⊿ ⌒ 1234567890
-─━│┃┄┅┆┇┈┉┊┋
-┌┍┎┏┐┑┒┓└┕┖┗┘┙┚┛├┝┞┟┠┡┢┣┤┥┦┧┨┩┪┫┬┭┮┯┰┱┲
-┳┴┵┶┷┸┹┺┻┼┽┾┿╀╁╂╃╄╅╆╇╈╉╊╋═║╒╓╔╕╖╗╘╙╚╛
-╜╝╞╟╠╡╢╣╤╥╦╧╨╩╪╫╬╭╮╯╰╱╲╳▁▂▃▄▅▆▇█ ▉ ▊▋▌▍▎▏
-▓▔▕ ▀■□▲△▼▽⊿◆◇○◎●◢◣◤◥★☆☉♀♂々〆〇「」『』〖〗【】〒〓
-〡〢〣〤〥〦〧〨〩㎎㎏㎜㎝㎞㎡㏄㏎㏑㏒㏕??〾⿰‖| |︴（）〔〕 ? ⺌ *
-⿱⿲⿳⿴⿵⿶⿷⿸⿹⿺⿻︰︱︳︴︵︶︷︸︹︺︻︼︽︾^﹀﹁﹂﹃﹄﹉﹊﹋﹌﹍﹎﹏～￥§
-™ ๑·ิ.·ั๑ ♧ ♡ ♂ ♀ ♠ ♣ ♥ ❤☜ ☞ ☎ ☏ ⊙ ◎ ☺☻ ☼ ▧ ▨ ♨ ◐ ◑↔↕▪ ▒ ░ ぃ◊◦▣▤▥ ▦▩ ◈ ◇ ♤ ¤ ๑ ⿻ ☠ ⊙ ◎ ► ◄ ↔ ↕ ▪ ▫ ☼ ♦ ▀ ▄ █ ▌ ▐ ▬ ◘ ◙ ◈  卌 ▓ ☑
-๑۩۩.. ..۩۩๑ ๑۩۞۩๑
-▶ ▷ ◀ ◁ ★ ☆ ⊙ ⓛⓞⓥⓔ
-⊙●○①⊕◎Θ⊙¤™♂♥℡
-@：！/ " _ < > `,·。≈{}~ ～() _ -『』√ $ @ * & # ※
-々∞Ψ ∪∩∈∏ の ℡ ぁ §∮”〃ミ灬∑⌒*〾⿻ㄨ ≮≯ +
-－×÷+－±/=∫∮∝ ∞ ∧∨ ∏ ‖∠ ≌ ∽ ≤ ≥ ≈<>じ
-⊙●★☆■♀『』◆◣◥▲Ψ ※◤ ◥ →№←〖〗@ ❤
-ξζω□∮〓※∴ぷ▂▃▅▆█ ∏卍卐【】△√ ∩¤々∞ㄨ
-≠āáǎàēéěèī í ǐ ì ō óǒòūúǔùǖǘǘǚǜüêɑ?ńň?
-♯♮ ₪큐
-✿｡✿ εїз ●· ۞۞ ҉
-♈♉♊♋♌♎♏♐♑♓♒♍
-✎﹏₯㎕ ҉
-
-
-
-
+- 
