@@ -4,16 +4,9 @@
 Linux中Shell编程相关知识整理。
 
 # 导航
-- [变量](变量.md)
-- [Shell中的各种括号](shell中的各种括号/index.md)
-- [if条件语句](if条件语句.md)
-- [&&](&&.md)
-- [for循环语句](for循环语句.md)
-- [util循环](util循环.md)
-- [case语句](case语句.md)
-- [select命令](select命令.md)
-- [function函数](function函数.md)
-- [数组](数组.md)
-    
+- [shell程序语言](shell程序语言/index.md)
+- [sed](sed/index.md)
+- [gawk](gawk/index.md)
+- [shell程序](shell程序/index.md)
 
 
