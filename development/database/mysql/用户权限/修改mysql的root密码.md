@@ -23,6 +23,7 @@ mysql> select @@log_error;
     ```
     skip-grant-tables
     ```
+    或者，在mysqld启动参数中增加：`# mysqld --user=mysql --skip-grant-tables --skip-networking `
 2. 重启mysql
 3. 使用root用户登录mysql
     在配置文件中指定了`skip-grant-tables`后，就可以不使用密码登录mysql了。所以可以直接输入空密码登录。
