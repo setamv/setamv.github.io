@@ -1,6 +1,14 @@
 # MySQL基于binlog主从复制搭建
-
-
+该方法适用于主从服务器都是全新的，且没有任何业务数据。
+1. 修改主服务器和从服务器的字符集
+    方法如下：
+    在my.cnf配置文件的[mysqld]下增加配置项`character_set_server=utf8`，完整的内容如下所示：
+    ```
+    [mysqld]
+    datadir=/var/lib/mysql
+    socket=/var/lib/mysql/mysql.sock
+    character_set_server=utf8
+    ```
 1. 设置主服务器的id
     为主服务器设置id，方法如下：
     在my.cnf配置文件的[mysqld]下增加配置项`server-id=120`，其中，`120`为主服务器的id，可以自定义，完整的内容如下所示：
@@ -83,7 +91,9 @@
              Master_Info_File: /var/lib/mysql/master.info
                             ...
     ```
-    可以看到，从服务器的中继日志文件为`192-relay-bin.000001`，IO线程和SQL线程当前没有启动，通过以下命令启动IO线程和SQL线程：
+    可以看到，从服务器的中继日志文件为`192-relay-bin.000001`，IO线程和SQL线程当前没有启动
+1. 启动从服务器的IO线程和SQL线程
+    通过以下命令启动IO线程和SQL线程：
     ```
     mysql> start slave;
     ```
@@ -146,3 +156,59 @@
     +----+------+-----------------------+------+-------------+------+---------------------------------------------------------------+------------------+
     ```
     线程`11`为发送binary log event的线程。
+1. 查看结果
+    在主服务器上新建数据库和表，并刷新从服务器的数据库，可以看到，数据自动同步过去了
+
+## 关闭从服务器的主从复制
+1. 关闭从服务器
+    查看从服务器的状态：
+    ```
+    mysql> show slave status;
+    *************************** 1. row ***************************
+               Slave_IO_State: Waiting for master to send event
+                  Master_Host: 192.168.199.120
+                  Master_User: repl
+                  Master_Port: 3306
+                Connect_Retry: 60
+              Master_Log_File: mysql-bin.000002
+          Read_Master_Log_Pos: 690
+               Relay_Log_File: 192-relay-bin.000007
+                Relay_Log_Pos: 903
+        Relay_Master_Log_File: mysql-bin.000002
+             Slave_IO_Running: Yes
+            Slave_SQL_Running: Yes
+                            ...
+             Master_Server_Id: 120
+                  Master_UUID: eaedf947-5475-11e9-8348-000c29409eeb
+             Master_Info_File: /var/lib/mysql/master.info
+                    SQL_Delay: 0
+          SQL_Remaining_Delay: NULL
+      Slave_SQL_Running_State: Slave has read all relay log; waiting for more updates
+    1 row in set (0.00 sec)
+    ```
+    从上面可以看到从服务器的IO线程和SQL线程都开启了，需要关闭他们，命令如下：
+    ```
+    mysql> stop slave;
+    ```
+2. 清空从服务器中记录的master信息
+    清空从服务器中记录的master信息，这些信息保存在文件`/var/lib/mysql/master.info`中，查看该文件中的信息：
+    ```
+    [root@192 ~]# cat /var/lib/mysql/master.info
+    25
+    mysql-bin.000002
+    690
+    192.168.199.120
+    repl
+    repl
+    3306
+    60
+    0
+    ...
+    eaedf947-5475-11e9-8348-000c29409eeb
+    86400
+    ```
+    
+    清空master信息的命令如下：
+    ```
+    mysql> reset slave;
+    ```
