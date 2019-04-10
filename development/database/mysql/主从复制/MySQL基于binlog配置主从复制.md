@@ -1,4 +1,4 @@
-# MySQL基于binlog主从复制搭建
+# MySQL基于binlog配置主从复制
 该方法适用于主从服务器都是全新的，且没有任何业务数据。
 1. 修改主服务器和从服务器的字符集
     方法如下：
@@ -65,7 +65,14 @@
     +------------------+----------+--------------+------------------+-------------------+
     1 row in set (0.00 sec)
     ```
-    上面`show master status`的结果中，显示了binary log的日志文件名称`mysql-bin.000001`，以及当前的位置`154`，这里先记住，后面从服务器设置master时将使用到
+    上面`show master status`的结果中各个字段的说明：
+    - File  binary log的日志文件名称`mysql-bin.000001`，该文件一般位于/var/lib/mysql目录下
+    - Position  binary log记录日期的当前位置
+    - Binlog_Do_DB  记录binary log日志的数据库
+    - Binlog_Ignore_DB  不记录binary log日志的数据库
+
+    其中，File和Position在这里先记住，后面从服务器设置master时将使用到。
+    上面的Binlog_Do_DB
 1. 为从服务器设置它的master
     执行如下命令：
     ```
