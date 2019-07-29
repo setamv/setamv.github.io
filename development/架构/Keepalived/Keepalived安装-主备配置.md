@@ -14,14 +14,14 @@ Keepalived是一个通过虚拟IP漂移实现主备HA的开源组件。
 启动Nginx：`# nginx`
 
 ## 防火墙设置
-keepalived使用 224.0.0.18作为VRRP协议的组播地址， 所以，需要在防火墙中放开改ip地址的访问限制。
+keepalived使用 224.0.0.18作为VRRP协议的组播地址， 所以，需要在防火墙中放开该ip地址的访问限制。
 下面分别从firewall和iptables两种CentOS最常用的防火墙讲述如何配置。
 另外，作为验证，需要开放Nginx默认的80端口
 
 ### firewall设置
 1. 开放VRRP协议的组播地址
     `# firewall-cmd --direct --permanent --add-rule ipv4 filter INPUT 0 --in-interface ens33 --destination 224.0.0.18 --protocol vrrp -j ACCEPT`
-    其中，ens33位网络接口名称，需要根据机器的具体网络接口进行设置（通过`# ip a`命令查看）。
+    其中，ens33为网络接口名称，需要根据机器的具体网络接口进行设置（通过`# ip a`命令查看）。
 
 2. 开放80端口，命令如下：
     ```

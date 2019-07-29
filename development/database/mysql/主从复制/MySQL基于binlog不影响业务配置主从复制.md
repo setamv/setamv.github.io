@@ -1,4 +1,4 @@
-# MySQL基于binlog不影响业务搭建主从复制
+# MySQL基于binlog不影响业务配置主从复制
 假设主库中已经存在业务数据，并且在搭建的过程中主库仍然不断有数据更新，这种情况下要搭建主从复制，就不能像[MySQL基于binlog主从复制搭建](MySQL基于binlog主从复制搭建.md)中的方法一样进行了。原因有2点：
 1. 已有的业务数据无法同步到从库中，因为已有的业务数据，主库不会再产生binlog event了
 2. 可能会丢失掉部分在搭建的过程中更新的数据。
@@ -388,24 +388,24 @@ USE `test`;
 MASTER_LOG_FILE和MASTER_LOG_POS的值将在从服务器导入数据后，重新开始同步中用到。即将主服务器的数据导入从服务器后，从服务器应该从主服务器上'mysql-bin.000002'文件的6215位置开始同步。
 
 ### 修改主数据库的部分数据
-    修改主数据库的部分数据，模拟搭建主从的过程中，主服务器在不停的写入数据，然后再查看主服务器的binlog位置：
-    ```
-    mysql> show master status\G;
-    *************************** 1. row ***************************
-                File: mysql-bin.000002
-            Position: 6889
-        Binlog_Do_DB: 
-    Binlog_Ignore_DB: 
-    Executed_Gtid_Set: 
-    1 row in set (0.00 sec)
-    ```
-    可以看到，主数据库在修改了数据后，binlog的位置变成了6889。
+修改主数据库的部分数据，模拟搭建主从的过程中，主服务器在不停的写入数据，然后再查看主服务器的binlog位置：
+```
+mysql> show master status\G;
+*************************** 1. row ***************************
+            File: mysql-bin.000002
+        Position: 6889
+    Binlog_Do_DB: 
+Binlog_Ignore_DB: 
+Executed_Gtid_Set: 
+1 row in set (0.00 sec)
+```
+可以看到，主数据库在修改了数据后，binlog的位置变成了6889。
 
 ### 将导出的数据导入从数据库中
-    在从数据库中执行如下命令：
-    ```
-    # mysql -uroot -proot --default-character-set=utf8 < test.sql
-    ```
+在从数据库中执行如下命令：
+```
+# mysql -uroot -proot --default-character-set=utf8 < test.sql
+```
 
 ## 查看结果
 在从服务器的数据库可以看到，导出数据后，主库更新的数据也同步到从库中了。
