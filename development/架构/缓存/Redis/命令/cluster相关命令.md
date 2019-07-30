@@ -125,8 +125,6 @@ Manual failovers are special and are safer compared to failovers resulting from 
         45820b1f1892af23600fafca6b13bde34364a376 192.168.199.130:8002@18002 slave 0e9f93246cbd0de72f3f216ba207c055ce36b51b 0 1564299689000 3 connected
         fe00ec489c2446232de3770fea1a9a7717079b79 192.168.199.130:7001@17001 master - 0 1564299690000 2 connected 5462-10922
         ```
-        
-
 ### 示例
 #### 重新设定master节点
 将一个slave节点重新设置为另一个master的slave。

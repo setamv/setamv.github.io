@@ -510,3 +510,63 @@ Manual failovers are special and are safer compared to failovers resulting from 
 1. 在执行`cluster failover`命令后，master节点发送了它的`replication offset`给slave，并等待slave接收所有的replication stream，完成后才会开始failover的过程。
 2. 开始新的master选举
 3. 选举完成后，原来的master（7001端口）变成了slave节点（日志中的 Replica 192.168.199.130:7001 asks for synchronization）
+
+## --cluster import
+`--cluster import`命令选项可以将cluster外的redis实例中的数据导入cluster中。
+命令格式：
+```
+# ./redis-cli --cluster import host:port
+                 --cluster-from <arg>
+                 --cluster-copy
+                 --cluster-replace
+```
+其中：
++ `host:port`
+    cluster中的任意节点信息
++ `--cluster-from <arg>`
+    指定导入数据的源redis实例信息（即将源redis实例的数据导入cluster中）。其中`<arg>`为源redis实例的`host:port`，不支持一次从多个源redis实例导入。
+    源redis实例既只能是非cluster的实例。如果指定了另一个cluster的redis实例，将报错，如下所示：
+    ```
+    [ERR] The source node should not be a cluster node.
+    ```
++ `--cluster-copy`
+    如果指定了该选项，将从源redis实例中`copy`数据，而不是`move`。
+    `move`和`copy`的区别是：数据导入完成后，`move`的方式将导致源redis实例中的数据被删除；而`copy`的方式则会保留源redis实例中的数据。
+    `move`为默认的方式
++ `--cluster-replace`
+    `--cluster-replace`的意义好像跟`--cluster-copy`一样，目前只知道指定了该选项后，原redis实例中的数据不会被删除。
+
+[注解]：
++ 在导入之前，如果源redis实例中的某个key在cluster中已经存在，导入数据将发生错误
+    错误信息如下：
+    ```
+    Migrating aa to 192.168.199.130:7000: Source 192.168.199.130:9000 replied with error:
+    ERR Target instance replied with error: BUSYKEY Target key name already exists.
+    ```
+
+### 示例
+将`192.168.199.130:9000`中的数据迁移到cluster中。
+```
+192.168.199.130:9000> keys *
+1) "aa"
+2) "cc"
+3) "bb"
+
+[root@192 redis-cluster]# ./redis-cli --cluster import 192.168.199.130:7000 --cluster-from 192.168.199.130:9000 --cluster-copy
+>>> Importing data from 192.168.199.130:9000 to cluster 192.168.199.130:7000
+>>> Performing Cluster Check (using node 192.168.199.130:7000)
+M: 0869aa36990814780569a04b5b3a20711f883347 192.168.199.130:7000
+   slots:[0-5460] (5461 slots) master
+M: 2459d529846f74902d24d18752c3ca8c74756edb 192.168.199.130:7001
+   slots:[5461-10922] (5462 slots) master
+M: 2e5beac362463c7f2c5f35dee9c94e5a8921dc9e 192.168.199.130:7002
+   slots:[10923-16383] (5461 slots) master
+[OK] All nodes agree about slots configuration.
+>>> Check for open slots...
+>>> Check slots coverage...
+[OK] All 16384 slots covered.
+*** Importing 3 keys from DB 0
+Migrating aa to 192.168.199.130:7000: OK
+Migrating cc to 192.168.199.130:7000: OK
+Migrating bb to 192.168.199.130:7001: OK
+```
