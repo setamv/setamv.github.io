@@ -545,6 +545,7 @@ Manual failovers are special and are safer compared to failovers resulting from 
     ```
 
 ### 示例
+#### 示例一
 将`192.168.199.130:9000`中的数据迁移到cluster中。
 ```
 192.168.199.130:9000> keys *
@@ -570,3 +571,48 @@ Migrating aa to 192.168.199.130:7000: OK
 Migrating cc to 192.168.199.130:7000: OK
 Migrating bb to 192.168.199.130:7001: OK
 ```
+
+## --cluster check
+`--cluster check`命令选项用于检查当前的cluster的状态。
+命令格式：
+```
+./redis-cli --cluster check host:port
+                 --cluster-search-multiple-owners
+```
+其中：
++ `host:port`
+    cluster中的任意节点信息
++ `--cluster-search-multiple-owners`
+    指定该选项后，会对包含多个slot的进行检查，打印信息如下：
+    ```
+    >>> Check for multiple slot owners...
+    ```
+### 示例
+#### 检查cluster
+```
+[root@192 redis-cluster]# ./redis-cli --cluster check 192.168.199.130:7000 --cluster-search-multiple-owners
+192.168.199.130:7000 (0869aa36...) -> 2 keys | 5461 slots | 0 slaves.
+192.168.199.130:7001 (2459d529...) -> 1 keys | 5462 slots | 0 slaves.
+192.168.199.130:7002 (2e5beac3...) -> 0 keys | 5461 slots | 0 slaves.
+[OK] 3 keys in 3 masters.
+0.00 keys per slot on average.
+>>> Performing Cluster Check (using node 192.168.199.130:7000)
+M: 0869aa36990814780569a04b5b3a20711f883347 192.168.199.130:7000
+   slots:[0-5460] (5461 slots) master
+M: 2459d529846f74902d24d18752c3ca8c74756edb 192.168.199.130:7001
+   slots:[5461-10922] (5462 slots) master
+M: 2e5beac362463c7f2c5f35dee9c94e5a8921dc9e 192.168.199.130:7002
+   slots:[10923-16383] (5461 slots) master
+[OK] All nodes agree about slots configuration.
+>>> Check for open slots...
+>>> Check slots coverage...
+[OK] All 16384 slots covered.
+>>> Check for multiple slot owners...
+```
+
+## --cluster fix
+`--cluster fix`命令选项用于修复cluster。
+什么情况下需要修复cluster？
++ 当使用`AOF files`的形式将redis实例的数据导入cluster的时候
+    使用这种方式导入后，导入的数据不是按key的哈希值落到cluster中对应的slots中，通过`--cluster fix`修复后，可以将导入的数据重新分配到它应该在的slots中。
+    参考redis官网中[Migrating to Redis Cluster](https://redis.io/topics/cluster-tutorial)一节的描述。
