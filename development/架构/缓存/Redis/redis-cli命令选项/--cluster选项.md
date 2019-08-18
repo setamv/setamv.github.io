@@ -167,11 +167,13 @@ fe00ec489c2446232de3770fea1a9a7717079b79 192.168.199.130:7001@17001 master - 0 1
 + `--cluster-timeout <arg>` 
     [未知]
 + `--cluster-pipeline <arg>` 
-    [未知]
+    reshard过程中，slot中的数据使用pipeline的方式迁移。
 + `--cluster-replace`
     [未知]
 
-`--cluster reshard`命令重新分配的slots的算法是怎么的？是平均分配还是？
+[注解]：
++ reshard会从序号低的slot开始迁移，例如：从节点A迁移10个slot到节点B，如果节点A当前分配的slot为0~100，将迁移序号为0~9的slot到节点B
++ reshard命令会同时迁移slot中的数据（如果有）
 
 ### 示例
 将2个slots从节点`192.168.199.130:7000`和`192.168.199.130:7001`挪到`192.168.199.130:7002`。操作步骤：1）使用命令`> cluster nodes`查看各节点的ID；2）执行reshard命令
@@ -282,10 +284,11 @@ Moving slot 5463 from 192.168.199.130:7001 to 192.168.199.130:7002:
 + 如果是新增一个slave节点，有可能导致cluster中已有的slave节点重新分配master。
     参见本节示例中的[新增一个slave节点并导致cluster中其他slave节点重新分配master](新增一个slave节点并导致cluster中其他slave节点重新分配master)
 + 如果新增一个slave节点，并且该slave节点曾经加入过某个cluster，加入新的cluster之前，最好在启动该slave节点之前清除掉之前cluster conf文件（即redis.conf文件中设置项`cluster-config-file`对应的文件，该文件由redis实例生成并自动维护，里面记录了redis实例参与的cluster的信息）
-    如果启动之前没有清楚cluster conf文件，在执行命令`--cluster add-node`最后，可能会遇到如下错误提示：
+    如果启动之前没有清除cluster conf文件，在执行命令`--cluster add-node`最后，可能会遇到如下错误提示：
     ```
     [ERR] Node 192.168.199.130:8003 is not empty. Either the node already knows other nodes (check with CLUSTER NODES) or contains some key in database 0.
     ```
++ 可以使用`CLUSTER MEET`和`CLUSTER REPLICATE`的组合实现该命令相同的效果。并且不会发生其他slave节点重新分配master的情况。
 
 
 ### 示例
@@ -534,7 +537,7 @@ Manual failovers are special and are safer compared to failovers resulting from 
     `move`和`copy`的区别是：数据导入完成后，`move`的方式将导致源redis实例中的数据被删除；而`copy`的方式则会保留源redis实例中的数据。
     `move`为默认的方式
 + `--cluster-replace`
-    `--cluster-replace`的意义好像跟`--cluster-copy`一样，目前只知道指定了该选项后，原redis实例中的数据不会被删除。
+    `--cluster-replace`的意义好像跟`--cluster-copy`一样，目前只知道指定了该选项后，源redis实例中的数据不会被删除。
 
 [注解]：
 + 在导入之前，如果源redis实例中的某个key在cluster中已经存在，导入数据将发生错误
