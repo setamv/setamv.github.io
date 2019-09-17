@@ -44,3 +44,6 @@ OK
 "hello"
 [注解]：直接在8000节点上查询key “a”的值，返回的是重定向到master节点；发送`READONLY`命令后，在8000节点上就可以查询到key “a”的值了
 ```
+
+### master节点fail后slave节点提升为master的过程
+首先，master节点fail

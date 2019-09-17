@@ -18,11 +18,11 @@
     Redis的List是基于链表实现的
 ### 操作命令
 + LPUSH 
-    向List的左侧新增一个元素。
+    向List的左侧新增元素，可以一次性指定多个新增的元素。如：`> lpush mylist 1 2 3`，将以此向List的左侧新增"1"、"2"、"3"三个元素。List的值从左到右以此为：3, 2, 1
 + LPUSHX 
     如果Key对应的List存在，则和LPUSH相同，如果Key对应的List不存在，则不作任何操作。
 + RPUSH 
-    向List的右侧新增一个元素。
+    向List的右侧新增元素，可以一次性指定多个新增的元素。
 + RPUSHX 
     如果Key对应的List存在，则和RPUSH相同，如果Key对应的List不存在，则不作任何操作。
 + LRANGE 
@@ -41,6 +41,7 @@
 + BRPOPLPUSH RPOPLPUSH命令的阻塞版本
 
 + LINDEX 获取List中指定索引位置的元素值
+    `LINDEX key index`，获取index（从0开始）指定位置的元素值
 + LINSERT 
     `LINSERT key BEFORE|AFTER pivot value` 
     将元素value插入pivot（指定元素的值）的前面或后面
@@ -133,10 +134,27 @@
 + ZRANGE `ZRANGE key start stop [WITHSCORES]` 获取按分值排序后的位于start到stop元素。WITHSCORES指定是否返回元素的分值
 + ZRANGEBYLEX 
     `ZRANGEBYLEX key min max [LIMIT offset count]`
+    当sorted set中所有元素都有相同的score时，`ZRANGEBYLEX`命令将返回值位于min和max之间元素（使用Lexicographical方式比较），如果sorted set中的元素存在不同的score，返回的值将变得不确定。
+    该命令在比较元素的值时，将使用Lexicographical方式进行比较，从低位开始到高位逐一比较，更长的值被认为分值更大。使用Lexicographical方式进行比较时，是比较的元素的值的二进制字节码，所以，对ASCII码表中的所有字符，字符的分值就是字符在ASCII码表中的位置（越往后分值越大），但是对非ASCII码字符来说就不是这样的了（比如utf-8编码的字符），这种情况下，分值取决于字符转换为二进制字节码后的值
+    参数说明：
+    - min max
+        用于指定元素比较的最小和最大值，min和max必须以"("或"["开始，它们分别表示比较的开区间和闭区间。当min和max的值分别为"-"和"+"时，表示不限定最小值和不限定最大值。
+    - LIMIT offset count
+        和MySQL中的`LIMIT count offset`类似，用于限定返回的元素个数。当count为负数时，将返回所有匹配的元素
     参见redis官方文档：https://redis.io/commands/zrangebylex
 + ZRANGEBYSCORE 
     `ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]`    
-    返回分值位于[min, max]之间的元素集合。LIMIT，offset，count类似SQL中的SELECT LIMIT offset, count
+    返回分值位于[min, max]之间的元素集合（默认按分值从小到大排序返回，如果分值相同，按字母顺序排序）
+    参数说明：
+    - min max
+        min和max用于指定本次需要获取的元素的分值所处的区间。默认为闭区间（即包含min和max边界值）。但是可以通过增加"("前缀来指定开区间，如：`zrangebyscore key (1 5"将返回分值位于(1, 5]之间的元素。
+        min的值可以指定为特殊的'-inf'，表示不限定最小的分值
+        max的值可以指定为特殊的'+inf'，表示不限定最大的分值
+        所以：`zrangebyscore key -inf +inf`将返回所有的元素
+    - WITHSCORES
+        如果加上该选项，将同时返回元素以及元素的分值；否则，将只返回元素
+    - LIMIT offset count
+        类似SQL中的`SELECT LIMIT offset, count`，count如果为负数，将返回offset后的所有元素
 + 。。。未完待续
 
 ## Bitmaps-位图类型

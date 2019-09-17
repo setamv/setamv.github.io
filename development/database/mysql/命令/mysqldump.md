@@ -1,6 +1,64 @@
 # mysqldump
 mysqldump用于从mysql导出数据，该命令有很多的选项，详情可以通过`# man mysqldump`查看
 
+## --host=host_name, -h host_name
+指定服务器地址
+
+## --port=port_num, -P port_num
+指定端口号
+
+## --user=user_name, -u user_name
+指定用户
+
+## --password[=password], -p[password]
+指定密码。注意：密码和`-p`选项之间是没有空格的
+
+## --routines, -R
+指定导出的数据中包含存储过程和函数。该选项要求当前导出用户拥有`mysql.proc`表的`SELECT`权限。
+
+## --no-data, -d
+指定只导出建表的语句，不导出表的数据。
+
+## --default-character-set=charset_name
+指定导出数据的编码格式。默认为utf-8
+
+## --databases, -B
+用于指定导出的数据库实例。
+Normally, mysqldump treats the first name argument on the command line as a database name and following names as table names. With this option, it treats all
+name arguments as database names.  CREATE DATABASE and USE statements are included in the output before each new database.
+
+## --no-create-db, -n
+当指定了`--databases, -B` 或 `--all-databases`的时候，导出的脚本中会包含 `CREATE DATABASE`语句。加上该选项后，将不包含 `CREATE DATABASE`语句。
+Suppress the CREATE DATABASE statements that are otherwise included in the output if the --databases or --all-databases option is given.
+
+## --tables
+该选项将覆盖`--databases, -B`选项，用于导出指定的表
+
+## --no-create-info, -t
+Do not write CREATE TABLE statements that create each dumped table.
+Note
+This option does not exclude statements creating log file groups or tablespaces from mysqldump output; however, you can use the --no-tablespaces option for this purpose.
+
+## --force, -f
+Continue even if an SQL error occurs during a table dump.
+One use for this option is to cause mysqldump to continue executing even when it encounters a view that has become invalid because the definition refers to a table that has been
+dropped. Without --force, mysqldump exits with an error message. With --force, mysqldump prints the error message, but it also writes an SQL comment containing the view definition
+to the dump output and continues executing.
+
+## --log-error=file_name
+Log warnings and errors by appending them to the named file. The default is to do no logging.
+
+## --opt
+This option, enabled by default, is shorthand for the combination of --add-drop-table --add-locks --create-options --disable-keys --extended-insert --lock-tables --quick
+--set-charset. It gives a fast dump operation and produces a dump file that can be reloaded into a MySQL server quickly.
+
+Because the --opt option is enabled by default, you only specify its converse, the --skip-opt to turn off several default settings. See the discussion of mysqldump option groups for
+information about selectively enabling or disabling a subset of the options affected by --opt.
+
+## --quick, -q
+This option is useful for dumping large tables. It forces mysqldump to retrieve rows for a table from the server a row at a time rather than retrieving the entire row set and
+buffering it in memory before writing it out.
+
 ## --master-data[=value]
 man帮助内容原文如下所示：
 ```
@@ -81,3 +139,8 @@ Option Groups
 The --master-data option automatically turns off --lock-tables. It also turns on --lock-all-tables, unless --single-transaction also is specified, in which case, a global read lock is acquired only for a short time at the beginning of the dump
 ```
 即，如果指定了`--single-transaction`选项，将会获取一个全局的只读锁，同时，`--single-transaction`选项会设置事务的隔离级别为`REPEATABLE READ`（即不会出现脏读），所以如果在导出数据的过程中加上该选项，可以保证导出的过程中数据库不会更新新的数据，相当于数据库变成了一个只读的数据库（除了ALTER TABLE, CREATE TABLE, DROP TABLE, RENAME TABLE, TRUNCATE TABLE命令以外）。
+
+
+## 示例
+
+### 

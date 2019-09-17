@@ -24,6 +24,14 @@ redis的eval命令用于执行Lua脚本。其命令格式如下所示：
 + 集群中的使用限制
     - eval命令必须在master节点上执行，在slave节点执行将返回重定向
     - eval命令中的key必须全部落在当前master的slot中，否则，将返回重定向
++ 如果Lua脚本存放在文件中，可以使用如下命令执行
+    ```
+    # redis-cli --eval <script_file> key1 ... keyn , arg1 ... argn
+    ```
+    其中：
+    * --eval 后面跟lua脚本文件的全路径
+    * key1 ... keyn 为脚本中将使用到的key列表（即使用KEYS[i]引用的参数）
+    * arg1 ... argn 为脚本中将使用到的参数列表（即使用ARGV[i]引用的参数）
 
 ### 示例
 #### 返回参数
@@ -69,15 +77,52 @@ OK
     
 
 #### redis.call()和redis.pcall()的区别
-redis.call() is similar to redis.pcall(), the only difference is that if a Redis command call will result in an error, redis.call() will raise a Lua error that in turn will force EVAL to return an error to the command caller, while redis.pcall will trap the error and return a Lua table representing the error.
-例如，下面使用`get`命令获取一个HASH结构的值，返回的错误信息分别如下所示：
+redis.call()和redis.pcall()的唯一区别就是：在调用redis脚本的过程中如果发生错误，redis.call()将抛出错误并中断Lua脚本程序的执行。
+而redis.pcall()不会中断Lua脚本程序的执行，但是会返回一个table值，其中有一个属性err，记录了发生的错误信息。可以通过 table['err']访问到该错误信息。并且错误发生的行以后的代码仍将继续执行。
+如下面的Lua脚本所示：
 ```
-127.0.0.1:6379> eval "return redis.call('get', 'ht')" 0
-(error) ERR Error running script (call to f_e9bb87f2121ada83daab62a8516f685e67889ee1): @user_script:1: WRONGTYPE Operation against a key holding the wrong kind of value 
-127.0.0.1:6379> 
-127.0.0.1:6379> eval "return redis.pcall('get', 'ht')" 0
-(error) WRONGTYPE Operation against a key holding the wrong kind of value
+# cat enhanced_avgscore.lua 
+local persons = redis.call('hkeys', KEYS[1])
+local totalScore = 0
+local scores = redis.call('hget', KEYS[1], unpack(persons))            -- 此处错误的使用了get命令获取HSet的值，将导致redis报错
+if type(scores) == 'table' and scores['err'] ~= nil then
+  return 'error happend! error info is: ' .. tostring(scores['err'])
+end
+for i, s in ipairs(scores) do
+  totalScore = tonumber(totalScore) + tonumber(s)
+end
+local avgScore = totalScore / #scores
+return avgScore
 ```
+使用redis客户端对Lua脚本进行调试如下所示：
+```
+# ./src/redis-cli -p 6379 --eval /opt/workspace/lua/enhanced_avgscore.lua scores
+(error) ERR Error running script (call to f_0a735222a69b4319d2c8641246960e71895807c1): @user_script:3: @user_script: 3: Wrong number of args calling Redis command From Lua script
+```
+
+将脚本中的redis.call改为redis.pcall后，脚本如下所示：
+```
+# cat enhanced_avgscore.lua 
+local persons = redis.call('hkeys', KEYS[1])
+local totalScore = 0
+local scores = redis.pcall('hget', KEYS[1], unpack(persons))            -- 此处由redis.call改为pcall
+if type(scores) == 'table' and scores['err'] ~= nil then                -- 改为pcall后，这里的条件将成立，并会执行这里的return语句
+  return 'error happend! error info is: ' .. tostring(scores['err'])
+end
+for i, s in ipairs(scores) do
+  totalScore = tonumber(totalScore) + tonumber(s)
+end
+local avgScore = totalScore / #scores
+return avgScore
+```
+使用redis客户端对Lua脚本进行调试如下所示：
+```
+# ./src/redis-cli --eval /opt/workspace/lua/enhanced_avgscore.lua scores
+"error happend! error info is: @user_script: 3: Wrong number of args calling Redis command From Lua script"
+```
+可以看到，换成redis.pcall()后，返回的是Lua脚本中自定义的错误内容了。
+
+
 
 #### redis.call()返回值的转换
 在Lua脚本中使用`redis.call()`执行命令时，redis将`redis.call()`中执行命令的返回值转换为对应Lua脚本的数据类型，然后，再将Lua脚本的数据类型转换到redis的数据类型返回给客户端。
@@ -136,7 +181,7 @@ redis中的数据类型转换原则：当一个redis的数据类型转换为Lua�
 2) (integer) 0
 ```
 
-### SCRIPT LOAD <script>
+### SCRIPT LOAD script
 该命令用于加载并缓存指定的脚本。一次只能加载一个脚本
 
 #### 示例
@@ -434,3 +479,12 @@ lua debugger> n
 
 (Lua debugging session ended -- dataset changes rolled back)
 ```
+
+## eval命令的使用场景
+
+### 执行过程需要保证原子性
++ 先判断再设值的过程
+    如果需要保证先判断再设置的整个过程的原子性，可以使用eval命令，因为eval命令的执行是原子性的。可以保证在判断值和设置值的过程中，不会有其他程序改变值。
+
+### 自定义函数
+比如，需要将redis中的一些函数组合起来，形成一个匹配固定业务的执行逻辑，并且该逻辑比较固定，可以使用eval命令，将完成业务的脚本当做一个函数。
