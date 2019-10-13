@@ -1,0 +1,22 @@
+【cut 管线命令】
+
+$ cut -d '分隔符' -f fields
+$ cut -c n1-n2
+
+参数和选项说明：
+	-d ：后面接分隔字符。与 -f 一起使用；
+	-f ：依据 -d 的分隔字符将一段讯息分区成为数段，用 -f 取出第几段的意思；
+	-c ：将第n1到n2个字符取出来，即根据位置取子串（包含n1和n2）。如果n1为空，表示从第一个字符开始；如果n2为空，则取n1以后的所有内容；
+
+示例：
+	$ url=ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-lite
+	$ echo ${url} | cut -d '/' -f 3
+说明：
+	上面打印的结果是“ftp.ncdc.noaa.gov”，意思是将url的值以符号'/'进行分割，并取第3个部分
+
+示例：
+	$ url=ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-lite
+	$ echo ${url} | cut -c 2-4
+说明：
+	上面打印的结果是“tp:”，意思是取出url中第2到第4个位置之间的字符子串。
+

@@ -1,0 +1,32 @@
+【指令的逃脱方法】
+当指令太长需要分多行编写时，需要在一行的末尾使用反斜线（\）来作为逃脱符，其后面紧跟的一个字符（可以是特殊字符，如回车键）将会逃脱（即不作为指令的一部分）。如：
+$ cp /var/spool/mail/root /etc/crontab \
+&gt; /etc/fstab /root
+
+【指令的快捷键】
+ctrl+u	从光标处向前删除指令串
+ctrl+k	从光标处向后删除指令串
+ctrl+a	将光标移动到指令串的最前面
+ctrl+e 	将光标移动到指令的最后面
+ctrl+u	删除整个指令
+
+其实，可以通过如下指令来查看当前的终端机配置：
+$ stty -a
+执行结果如下所示（^表示ctrl键）：
+
+...
+intr = ^C; quit = ^\; erase = ^?; kill = ^U; eof = ^D; eol = <undef>;
+eol2 = <undef>; swtch = <undef>; start = ^Q; stop = ^S; susp = ^Z; rprnt = ^R;
+....
+
+其中：
+intr : 送出一个 interrupt （中断） 的讯号给目前正在 run 的程序 （就是终止啰！）；
+quit : 送出一个 quit 的讯号给目前正在 run 的程序；
+erase : 向后删除字符，
+kill : 删除在目前命令行上的所有文字；
+eof : End of file 的意思，代表“结束输入”。
+start : 在某个程序停止后，重新启动他的 output
+stop : 停止目前屏幕的输出；
+鸟哥的 Linux 私房菜：基础学习篇 第四版
+10.4 Bash Shell 的操作环境： 532
+susp : 送出一个 terminal stop 的讯号给正在 run 的程序

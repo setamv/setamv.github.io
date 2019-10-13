@@ -1,0 +1,41 @@
+1、以下变量内容的删除、取代、替换操作都基于url变量进行演示：
+$ url=ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-lite
+2、以下变量操作的关键字中，*表示匹配任意内容
+
+【变量内容的删除】
+变量的删除包括：
+#	用于删除从开始匹配的最短的内容，用法：${变量#关键字}
+##	用于删除从开始匹配的最长的内容，用法：${变量##关键字}
+%	与#的意思一样，只是%是从变量值的末尾开始匹配，用法：${变量%关键字}
+%%	与##的意思一样，只是%%是从变量值得末尾开始匹配，用法：${变量%%关键字}
+
+示例：
+$ echo ${url#*//}		
+结果：ftp.ncdc.noaa.gov/pub/data/noaa/isd-lite
+说明：删除掉url中从开始与“*//”匹配的最短内容，即“ftp://”部分
+
+$ echo ${url##*/}		
+结果：isd-lite
+说明：删除掉url中从开始与“*/”匹配的最长内容，即“ftp://ftp.ncdc.noaa.gov/pub/data/noaa/”
+
+$ echo ${url%/*}
+结果：ftp://ftp.ncdc.noaa.gov/pub/data/noaa
+说明：删除掉url中从末尾与“/*”匹配的最短内容，即“:/isd-lite”
+
+$ echo ${url%%/*}
+结果：“ftp:”
+说明：删除掉url中从末尾与“/*”匹配的最长内容，即“//ftp.ncdc.noaa.gov/pub/data/noaa/isd-lite”
+
+
+【变量内容的取代】
+/	用于替换匹配的第一个内容，用法：${变量/匹配值/替换值}
+//	用于替换所有匹配的内容，用法：${变量//匹配值/替换值}
+
+示例：
+$ echo ${url/ftp.*gov/ftp.sina.com}
+结果：ftp://ftp.sina.com/pub/data/noaa/isd-lite
+说明：将变量url中匹配“ftp.*gov”的第一次出现的内容替换成“ftp.sina.com”
+
+$ echo ${url//\//\\}
+结果：ftp:\\ftp.ncdc.noaa.gov\pub\data\noaa\isd-lite
+说明：将变量url中匹配“/”的所有内容替换成“\”

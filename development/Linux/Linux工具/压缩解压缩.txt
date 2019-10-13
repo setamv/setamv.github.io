@@ -1,0 +1,10 @@
+Linux中常见的压缩文件格式：
+*.z		compress程序压缩的文件
+*.gz	gzip程序压缩的文件
+*.bz2	bzip2程序压缩的文件
+*.tar	tar程序打包的文件，并没有压缩过
+*.tar.gzip 	tar程序打包的文件，其中经过gzip的压缩
+*.tar.bz2 	tar程序打包的文件，其中经过bz2的压缩
+
+
+gzip

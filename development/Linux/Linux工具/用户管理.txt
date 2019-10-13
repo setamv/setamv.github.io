@@ -1,0 +1,8 @@
+【用户管理的相关文件】
+1、/etc/group 用户组相关
+
+
+
+/etc/passwd		/etc/shadow
+
+【/etc/group】文件
