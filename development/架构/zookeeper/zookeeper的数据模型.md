@@ -1,4 +1,19 @@
 # ZooKeeper的数据模型
+ZooKeeper由一个树状的节点结构组成，每个节点被称为*znode*。就像文件系统中的文件夹和文件一样，ZooKeeper中每个节点由规范的斜杠分隔的路径表示，子节点的路径为父节点路径+"/"+子节点的名称。如："/parent"为父节点路径，"/parent/child1"为子节点路径。
+*znode*的路径不支持相对路径，只支持绝对路径，每个节点都可以包含数据。
+*znode*的路径必须满足一下规则（参见ZooKeeper源码中的org.apache.zookeeper.common.PathUtils#validatePath(String)）：
++ path != null
++ path.length != 0
++ path必须以"/"开始
++ path不能以"/"结尾
++ path中不能包含连续的两个"/"
++ path中不能包含"/../"或"/.."（代表相对路径）
++ path中不允许包含"/./"或以"/."结尾
++ 不能包含以下字符c：
+    c > '\u0000' && c <= '\u001f'
+                || c >= '\u007f' && c <= '\u009F'
+                || c >= '\ud800' && c <= '\uf8ff'
+                || c >= '\ufff0' && c <= '\uffff'
 
 ## 节点状态信息
 ZooKeeper节点的状态信息可通过命令`# zkCli.sh -server localhost:2818 get -s /node-path`查看，其中，node-path为节点的路径。如下所示：
@@ -43,4 +58,5 @@ numChildren = 2
     - 节点内容每次变更时都会加1，注意，这里的变更仅仅指对节点的数据进行设置，即便设置后节点的内容未发生任何改变也是有效的。
         如：节点内容在变更前为"hello"，使用命令`set /node-path hello`设置节点的内容，这里新的内容和节点已有的内容一样，这种情况下cversion的值也会加1     
 + aclVersion : 节点ACL的版本号        
-+ ephemeralOwner : 临时节点所属客户端会话的会话ID，非临时节点该值为0  
++ ephemeralOwner : 临时节点所属客户端会话的会话ID，非临时节点该值为0
+  
