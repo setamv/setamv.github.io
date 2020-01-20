@@ -1,0 +1,55 @@
+【join管道命令】
+将两个文件中按规则匹配的行连接成一行
+
+$ join [-ti12] file1 file2
+
+选项与参数：
+	-t ：指定一行数据的分隔符。默认为空白字符。-t选项与下面的-1和-2选项结合使用，用于指定一行数据分割后用于比较的第几个字段。
+	-i ：忽略大小写的差异；
+	-1 ：这个是数字的 1 ，代表“第一个文件要用分割后的第几个字段来分析”的意思。默认是第1个字段；
+	-2 ：代表“第二个文件要用分割后的第几个字段来分析”的意思,默认是第1个字段。
+
+示例：
+	$ join -t ':' -1 1 -2 1 /etc/passwd /etc/shadow | head -n 3
+说明：
+	上面的指令用于将 /etc/passwd 文件和 /etc/shadow 文件中的内容，以“:”分割后，取分割后的第一个字段进行比较，如果相同，就将两行信息连接成一行。
+
+示例：
+	假设有两个文件cp1和cp2，它们的内容分别如下所示：
+cp1文件内容:
+2:susie
+3:angel
+4:hong
+1:setamv
+
+cp2文件内容：
+cook:1
+wash:2
+walk:3
+run:2
+
+执行命令：
+
+	$ join -t ':' -1 1 -2 2 cp1 cp2
+
+执行结果将是：
+	2:susie:wash
+	join: cp2:4: is not sorted: run:2
+	3:angel:walk
+	join: cp1:4: is not sorted: 1:setamv
+
+如果出现上面的结果，则需要先对两个文件进行排序（按join的字段进行排序）：
+
+	$ sort -t ':' -k 1 cp1 > cp1.sort
+	$ sort -t ':' -k 2 cp2 > cp2.sort
+	$ join -t ':' -1 1 -2 2 cp1.sort cp2.sort
+
+执行结果如下：
+
+	1:setamv:cook
+	2:susie:run
+	2:susie:wash
+	3:angel:walk
+
+注意：
+	2:susie通过连接出现了2行结果。这时因为在cp2.sort文件中，id为2的出现了2次。

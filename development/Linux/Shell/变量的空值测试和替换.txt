@@ -1,0 +1,41 @@
+【测试变量是否存在】
+$ echo ${variable-sometext}		
+说明：
+	上面的variable为待测试的变量，sometext为任意的非空字符串。
+结果：
+	1）如果variable已定义，则打印的结果为variable的值，注意，有可能variable的值是空字符串（即""），此时，将不打印任何信息
+	2）如果variable未定义，则打印sometext。
+
+$ echo ${variable:-sometext}
+说明：
+	上面的variable为待测试的变量，sometext为任意的非空字符串。
+结果：
+	1）如果variable已定义且其值为非空字符串，则打印的结果为variable的值；
+	2）如果variable已定义且其值为空字符串（即""），则打印zometext
+	2）如果variable未定义，打印sometext。
+
+
+【默认值设置的实现】
+根据上面的规则，可以很容易的实现默认值的设置。如：
+$ greetings=${greeings:-'hello, shell!'}
+则，当greetings未定义或者值为空字符串时，默认设置它的值为'hello, shell!'
+
+
+【变量设置方式表】
+
+变量设置方式		str没有设置			str为空字串			str已设置为非空字串
+var=${str-expr} 	var=expr 			var=				var=$str
+var=${str:-expr} 	var=expr 			var=expr 			var=$str
+var=${str+expr} 	var= 				var=expr 			var=expr
+var=${str:+expr} 	var= 				var= 				var=expr
+var=${str=expr} 	str=expr var=expr 	str不变 var=		str不变 var=$str
+var=${str:=expr} 	str=expr var=expr 	str=expr var=expr 	str不变 var=$str
+var=${str?expr} 	expr 输出至 stderr 	var= 				var=$str
+var=${str:?expr} 	expr 输出至 stderr 	expr输出至stderr 	var=$str
+
+上面这张表的规律总结如下：
+	1）-	可以理解为设置默认值。即var的默认值为expr，但是当str为不为空时，优先取str的值。整个过程中str本身不变。
+	2）:-	可以理解为 - 符号在str为空字符串时也取默认值；
+	3）=和:= 	可以理解为符号 - 和 :-  的增强，唯一的区别是当var取默认值expr的时候，str的值也会被设置为默认值expr
+	4）? 和 :?	可以理解为符号 - 和 :- 表达式中，当取默认值expr时，会输出到stderr。
+	5）+和:+	可以理解为符号 - 和 :- 的反，即当符号 - 和 :- 表达式中var取默认值expr时，符号 + 和 :+ 表达式中var取str的值；反过来也一样

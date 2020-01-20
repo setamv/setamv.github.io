@@ -1,0 +1,52 @@
+【变量的设置规则】
+1、变量与其值之间以一个等号“=”来连接，如：“myname=setamv”
+2、等号两边不能连接空白字符，如：“myname =setamv” 或 “myname=setamv luo"都是错误的。
+3、变量名只能是英文与数字组成，且不能以数字开头，如：“1myname=setamv”是错误的。
+4、变量值如果有空白字符，需要将变量值放到双引号或单引号中，如：“myname='setamv luo'”，并且：
+	1）双引号内的特殊字符，如$等，可以保有原有的特性，如：“myhome="$HOME"”，则变量myhome的值将是当前用户的主目录，即环境变量$HOME的值。
+	2）单引号内的特殊字符则仅为一般字符，如：“myhome='$HOME'”，则变量myhome的值将是“$HOME”。
+5、在变量的值中，可以使用反斜线“\”逃脱特殊字符，如：“myname=setamv\ luo”，则变量myname的值是“setamv luo”，而不是报错误；“myname='\$HOME'”，则变量myname的值是“$HOME”
+6、在一串指令的执行中，还需要借由其他额外的指令所提供的的信息时，可以使用反单引号“`”（键盘上左上角第二排第一个键） 或“$(指令)”的格式。如：“linecount=`ll | wc -l`” 和 “linecount=$(ll | wc -l)” 的结果都是linecout的值为指令“ll | wc -l”的执行结果，即当前目录下的文件个数。
+7、在变量的值中，可以通过 “$变量名” 或 “${变量名}” 来对其他变量的值进行引用，如：“myhome="$HOME is my home"”，则“myhome”的值为变量“$HOME”的值追加上字符串“ is my home”。
+8、若一个变量需要在其他子程序中用到，需要使用export来使变量变成环境变量。如："export JAVA_HOME"。
+其中，子程序的意思是指，在当前shell的情况下，去启用另外一个新的shell（或程序），新的那个shell就是子程序。
+9、取消变量的方法为使用unset。如：“unset myname”
+
+
+【有用的环境变量和系统变量】
+1、RANDOM	随机数生成器变量
+			只要使用 $RANDOM，便可以获得一个0~32767之间的随机数。该环境变量是引用的 /dev/random 这个程序。如果想要获得0~9之间的随机数，可以利用declare宣告数值类型：$ declare -i number=$RANDOM*10/32767
+
+2、PS1		命令提示符的格式。具体的格式，参考 man bash [3]
+			即等待输入指令时前面展示的那一段内容的格式，如：当PS1的值为“[\u@\h \W]\$”时，命令提示符部分看起来像这样：“[setamv@localhost noaa]$”
+
+3、?		这个变量是：“上一个执行的指令所回传的值”
+			当我们执行某些指令时，这些指令都会回传一个执行后的代码。一般来说，如果成功的执行该指令， 则会回传一个 0 值，如果执行过程发生错误，就会回传“错误代码”才对！一般就是以非为 0 的数值来取代。如连续执行两个指令：
+			$ echo $SHELL
+			$ echo $?		# 这里会打印出上一个指令，即“echo $SEHLL”的执行结果（即是否执行成功）。
+
+
+4、OSTYPE, HOSTTYPE, MACHTYPE	这三个变量的值是当前操作系统的类型、主机类型（X86_64等）
+
+
+5、变量的键盘读取 read 指令
+	使用read指令，可以将键盘输入的内容指定给变量。如：
+	$ read [-pt] variable	# -p 后面接提示信息， -t 后面接超时时间（单位秒）
+
+6、变量的声明 declare 指令
+	$ declare [-aixr] variable[=value]
+	选项与参数：
+		-a 	将后面的variable变量定义为数组类型
+		-i 	将后面的variable变量定义为整数类型
+		-x 	与export作用一样，将后面的variable变量变成环境变量。可以通过 declare +x 取消。
+		-r 	将变量设置成为readonly类型，该变量不可被更改内容，也不能unset。一经设定，永远都是readonly类型了。
+
+		variable	变量名称
+		=value		指定变量的值
+
+	数组的声明和使用
+		$ declare -a arr
+		$ arr[0]=val1
+		$ arr[2]=val2
+		$ echo ${arr[0]}
+

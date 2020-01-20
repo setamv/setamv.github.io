@@ -1,0 +1,13 @@
+【col管线命令】
+col管线命令用于替换输入流中的特殊字符
+
+$ col [-bfphxlvH]
+
+选项和参数
+	-b 		不打印backspace	 
+ 	-f 		permit forward half line feeds
+ 	-p 		pass unknown control sequences
+ 	-h 		convert spaces to tabs
+ 	-x 		convert tabs to spaces
+ 	-l 		buffer at least NUM lines
+

@@ -1,0 +1,15 @@
+【wget命令】
+
+for i in {2009..2011}  
+do   
+
+cd ~/noaa/  
+wget --execute robots=off -r -b -np -nH --cut-dirs=4 -R -a ~/noaa/wget.log index.html* ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-lite/$i/
+done
+
+
+
+wget --execute robots=off -r -np -nH -b --cut-dirs=4 -a ~/noaa/wget.log -R index.html* ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-lite/1999
+
+
+~/noaa/1951/014880-99999-1951.gz

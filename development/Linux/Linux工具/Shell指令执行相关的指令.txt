@@ -1,0 +1,17 @@
+【history指令】
+history指令用于查看历史执行的指令列表，本次登录shell前的历史指令记录在~/.bash_history文件中。
+history指令相关的参数和选项如下：
+
+$ history n		# 查看最近执行的n条shell指令
+
+$ history -c	# 将目前的shell中的所有history内容全部清除
+
+$ history -a	# 将目前新增的 history 指令新增入 histfiles 中，若没有加 histfiles ，则默认写入 ~/.bash_history
+
+$ history -r	# 将 histfiles 的内容读到目前这个 shell 的 history 记忆中
+
+$ !n			# 执行历史指令中的第n条。
+
+$ !command		# 由最近的指令向前搜寻“指令串开头为 command”的那个指令，并执行第一个匹配历史指令（包括历史指令设置的参数和选项）；
+
+$ !!			# 就是执行上一个指令（相当于按↑按键后，按 Enter）

@@ -1,0 +1,27 @@
+split指令用于将大文件分割成很多块小文件的
+并且可以使用cat指令将多个文件进行合并。
+
+$ split [-bl] file PREFIX
+
+选项与参数：
+	-b ：后面可接欲分区成的文件大小，可加单位，例如 b, k, m 等；
+	-l ：以行数来进行分区。
+	PREFIX ：代表前置字符的意思，可作为分区文件的前导文字。
+
+示例（假设当前目录有一个文件somefile，大小为100M）：
+
+	$ split -b 50m somefile somefile-part-
+
+说明：
+	将文件somefile以50M大小为单位分割成多个小文件，并且分割后的文件以 somefile-part- 为文件名前缀。
+	这种情况，一般分割后的文件会以 somefile-part-aa   somefile-part-ab命名。
+注意：
+	split指令分割的多个小文件通常都是按字母顺序依次命名的，比如 aa、ab、ac。。。，这些名称不能随便更改，不然合并的时候会发生错乱，无法还原原始文件。
+
+
+示例（将上面分割的文件合并成一个文件）
+
+	$ cat somefile-part-* >> somefile-merge
+
+说明：
+	当前目录下以 somefile-part- 为前缀的多个文件将被合并到一个文件中

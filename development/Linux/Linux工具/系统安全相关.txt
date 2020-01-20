@@ -1,0 +1,10 @@
+【防火墙相关的命令】
+
+RHEL7下关闭防火墙
+1、获得root 控制权限
+2、查看防火墙状态：
+	$systemctl status firewalld
+3、关闭防火墙（临时性的，系统重启后防火墙又会启动）：
+	systemctl stop firewalld
+4、禁用防火墙（重启后防火墙也不会启动）：
+	systemctl disable firewalld

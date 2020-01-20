@@ -1,0 +1,4 @@
+【日期的格式化输出】
+$ date +%Y-%m-%d   # 打印出当天日期，格式如：2014-01-12
+$ daysago2=date --date='2 days ago'  # 变量daysago2为当前日期2天前的日期。
+$ 

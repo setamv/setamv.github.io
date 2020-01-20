@@ -51,7 +51,6 @@ Sub 合并当前目录下所有工作簿的全部工作表到对应序号的工�
         ' 取得当前目录下的下一个Excel文件路径
         processingWorkbookName = Dir
     Loop
-    Range("A1").Select
     Application.ScreenUpdating = True
     MsgBox "共合并了" & processedWorkbookCount & "个工作薄下的全部工作表。如下：" & Chr(13) & processedWorkbookNames, vbInformation, "提示"
 End Sub
