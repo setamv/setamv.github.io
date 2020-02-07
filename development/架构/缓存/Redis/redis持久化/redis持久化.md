@@ -4,6 +4,8 @@ redis的持久化方式有三种：
     RDB的方式可以保存redis在任意时点的快照
 + AOF（Append Only File）方式
     AOF的方式下，redis实例将收到的写操作记录日志，并通过回放的方式恢复数据。
++ 混合方式
+    即RDB和AOF的混合方式
 
 ## RDB方式
 当使用RDB的方式进行持久化时，redis实例将以既定的周期将redis实例当前数据的快照写入rdb文件（一般以.rdb为后缀）。
